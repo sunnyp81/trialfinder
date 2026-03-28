@@ -1,0 +1,54 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ConditionGrid from '@/components/ConditionGrid.astro';
+import { siteConfig } from '@/lib/site-config';
+import { buildBreadcrumbSchema, buildItemListSchema } from '@/lib/schema';
+
+import conditionsData from '@/data/conditions.json';
+
+const schemas = [
+  buildBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'All Conditions', url: `${siteConfig.url}/conditions/` },
+  ]),
+  buildItemListSchema(
+    conditionsData.map(c => ({
+      name: c.name,
+      url: `${siteConfig.url}/condition/${c.slug}/`,
+    }))
+  ),
+];
+---
+
+<BaseLayout
+  title="All Clinical Trial Conditions — A to Z"
+  description="Browse all conditions with recruiting clinical trials. Each condition page explains trial eligibility in plain English so patients can understand."
+  schema={schemas}
+>
+  <div class="container section-sm">
+    <h1 class="mb-3">All Clinical Trial Conditions</h1>
+    <p class="mb-8" style="color: var(--color-text-muted);">
+      {conditionsData.length} conditions with recruiting trials.
+      Select a condition to see plain-English eligibility summaries.
+    </p>
+
+    <ConditionGrid conditions={conditionsData} limit={999} />
+
+    <section class="mt-12 mb-8" aria-labelledby="az-heading">
+      <h2 id="az-heading" class="mb-4">Complete A–Z List</h2>
+      <div class="columns-2 md:columns-3 lg:columns-4 gap-4">
+        {conditionsData
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map(c => (
+            <p class="mb-1.5 text-sm break-inside-avoid">
+              <a href={`/condition/${c.slug}/`} style="text-decoration: none; color: var(--color-text);">
+                {c.name}
+              </a>
+              <span style="color: var(--color-text-light);"> ({c.trialCount})</span>
+            </p>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>

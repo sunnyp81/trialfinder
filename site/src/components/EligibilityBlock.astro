@@ -1,0 +1,44 @@
+---
+interface Props {
+  canJoin: string[];
+  cannotJoin: string[];
+  nctId: string;
+}
+
+const { canJoin, cannotJoin, nctId } = Astro.props;
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  {canJoin.length > 0 && (
+    <div class="eligibility-block eligibility-can-join">
+      <h3 class="text-lg mb-3" style="color: var(--color-hope-dark);">Who Can Join</h3>
+      <ul>
+        {canJoin.map(item => (
+          <li set:html={item} />
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {cannotJoin.length > 0 && (
+    <div class="eligibility-block eligibility-cannot-join">
+      <h3 class="text-lg mb-3" style="color: #991B1B;">Who Cannot Join</h3>
+      <ul>
+        {cannotJoin.map(item => (
+          <li set:html={item} />
+        ))}
+      </ul>
+    </div>
+  )}
+</div>
+
+<p class="text-sm mt-2" style="color: var(--color-text-light);">
+  These criteria are simplified for readability.
+  <a
+    href={`https://clinicaltrials.gov/study/${nctId}`}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    View the full original criteria on ClinicalTrials.gov
+  </a>.
+</p>

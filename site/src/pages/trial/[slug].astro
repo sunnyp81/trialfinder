@@ -1,0 +1,228 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import EligibilityBlock from '@/components/EligibilityBlock.astro';
+import EmailCapture from '@/components/EmailCapture.astro';
+import { siteConfig, formatPhase, formatStatus, formatDate, ageDisplay, sexDisplay, phaseSafetyTemplates } from '@/lib/site-config';
+import { buildMedicalTrialSchema, buildFAQSchema, buildBreadcrumbSchema } from '@/lib/schema';
+
+import trialsData from '@/data/trials.json';
+
+export function getStaticPaths() {
+  return trialsData.map(trial => ({
+    params: { slug: trial.slug },
+    props: { trial },
+  }));
+}
+
+const { trial } = Astro.props;
+const { label: statusLabel, class: statusClass } = formatStatus(trial.status);
+const phase = formatPhase(trial.phase);
+const startDate = formatDate(trial.startDate);
+const age = ageDisplay(trial.minAge, trial.maxAge);
+const sex = sexDisplay(trial.sex);
+const primaryCondition = trial.conditions[0] || 'Clinical Trial';
+
+// Group locations by state
+const locationsByState = new Map<string, typeof trial.locations>();
+for (const loc of trial.locations) {
+  const state = loc.state || 'Unknown';
+  if (!locationsByState.has(state)) locationsByState.set(state, []);
+  locationsByState.get(state)!.push(loc);
+}
+const sortedStates = [...locationsByState.entries()].sort(([a], [b]) => a.localeCompare(b));
+const totalLocations = trial.locations.length;
+
+// Phase safety text
+const phaseKey = trial.phase.split(', ')[0];
+const phaseSafety = phaseSafetyTemplates[phaseKey] || 'All trials listed on ClinicalTrials.gov are reviewed by an Institutional Review Board (IRB).';
+
+const faqs = [
+  {
+    question: 'Is this trial safe to join?',
+    answer: `All trials listed on ClinicalTrials.gov are reviewed by an Institutional Review Board (IRB) — an independent ethics committee that protects participants. ${phaseSafety}`,
+  },
+  {
+    question: 'Will I be paid for participating?',
+    answer: 'Compensation varies by trial. Contact the research team directly to ask about reimbursement for travel or time.',
+  },
+  {
+    question: 'Can I leave the trial if I change my mind?',
+    answer: 'Yes. Participation in any clinical trial is completely voluntary. You can withdraw at any time without affecting your regular medical care.',
+  },
+];
+
+const breadcrumbItems = [
+  { label: primaryCondition, href: `/condition/${trial.conditions[0]?.toLowerCase().replace(/[^\w\s-]/g, '').replace(/[\s_]+/g, '-').replace(/-+/g, '-')}/` },
+  { label: trial.briefTitle.slice(0, 50) + (trial.briefTitle.length > 50 ? '...' : '') },
+];
+
+const schemas = [
+  buildMedicalTrialSchema(trial),
+  buildFAQSchema(faqs),
+  buildBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: primaryCondition, url: `${siteConfig.url}${breadcrumbItems[0].href}` },
+    { name: trial.briefTitle, url: `${siteConfig.url}/trial/${trial.slug}/` },
+  ]),
+];
+
+const briefTitleTruncated = trial.briefTitle.slice(0, 40);
+---
+
+<BaseLayout
+  title={`${trial.briefTitle} — Plain English`}
+  description={`${trial.plainSummary?.slice(0, 150) || trial.briefTitle}. See plain English eligibility criteria.`}
+  schema={schemas}
+>
+  <div class="container-narrow section-sm">
+    <Breadcrumb items={breadcrumbItems} />
+
+    <article>
+      <header class="mb-8">
+        <div class="flex flex-wrap items-center gap-2 mb-3">
+          <span class={`badge ${statusClass}`}>{statusLabel}</span>
+          {phase !== 'N/A' && <span class="pill">{phase}</span>}
+        </div>
+        <h1 class="mb-3">{trial.briefTitle}</h1>
+        <p class="trial-meta">
+          {startDate && (
+            <span>
+              Started <time datetime={trial.startDate}>{startDate}</time>
+            </span>
+          )}
+          <span>NCT ID: <code style="font-size: 0.875rem;">{trial.nctId}</code></span>
+        </p>
+      </header>
+
+      <!-- What This Trial Is Testing -->
+      <section aria-labelledby="summary-heading" class="mb-10">
+        <h2 id="summary-heading" class="mb-3">What This Trial Is Testing</h2>
+        <p class="text-lg" style="color: var(--color-text-muted); line-height: 1.8;">
+          {trial.plainSummary || trial.briefTitle}
+        </p>
+        {phase !== 'N/A' && (
+          <details class="mt-4">
+            <summary>What is {phase}?</summary>
+            <p>{phaseSafety}</p>
+          </details>
+        )}
+      </section>
+
+      <!-- Do You Qualify? -->
+      <section aria-labelledby="qualify-heading" class="mb-10">
+        <h2 id="qualify-heading" class="mb-4">Do You Qualify?</h2>
+        <EligibilityBlock
+          canJoin={trial.canJoin || []}
+          cannotJoin={trial.cannotJoin || []}
+          nctId={trial.nctId}
+        />
+        <div class="flex flex-wrap gap-4 mt-4 text-sm" style="color: var(--color-text-muted);">
+          <span><strong>Age:</strong> {age}</span>
+          <span><strong>Sex:</strong> {sex}</span>
+          {trial.healthyVolunteers === 'Yes' && <span><strong>Healthy volunteers:</strong> Accepted</span>}
+        </div>
+      </section>
+
+      <!-- Locations -->
+      <section aria-labelledby="locations-heading" class="mb-10">
+        <h2 id="locations-heading" class="mb-4">Where This Trial Is Taking Place</h2>
+        <p class="mb-4" style="color: var(--color-text-muted);">
+          {totalLocations} location{totalLocations !== 1 ? 's' : ''} across {sortedStates.length} state{sortedStates.length !== 1 ? 's' : ''}
+        </p>
+
+        {sortedStates.length <= 8 ? (
+          sortedStates.map(([state, locs]) => (
+            <div class="mb-4">
+              <h3 class="text-base font-semibold mb-1">{state}</h3>
+              <ul class="text-sm space-y-1" style="color: var(--color-text-muted); list-style: none; padding: 0;">
+                {locs.map(loc => (
+                  <li>{loc.facility}{loc.city ? `, ${loc.city}` : ''}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        ) : (
+          <>
+            {sortedStates.slice(0, 8).map(([state, locs]) => (
+              <div class="mb-4">
+                <h3 class="text-base font-semibold mb-1">{state}</h3>
+                <ul class="text-sm space-y-1" style="color: var(--color-text-muted); list-style: none; padding: 0;">
+                  {locs.map(loc => (
+                    <li>{loc.facility}{loc.city ? `, ${loc.city}` : ''}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            <details>
+              <summary>Show all {sortedStates.length} states</summary>
+              <div class="pt-2">
+                {sortedStates.slice(8).map(([state, locs]) => (
+                  <div class="mb-4">
+                    <h3 class="text-base font-semibold mb-1">{state}</h3>
+                    <ul class="text-sm space-y-1" style="color: var(--color-text-muted); list-style: none; padding: 0;">
+                      {locs.map(loc => (
+                        <li>{loc.facility}{loc.city ? `, ${loc.city}` : ''}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </details>
+          </>
+        )}
+
+        {(trial.contactEmail || trial.contactPhone) && (
+          <address class="mt-6 p-4" style="background: var(--color-bg-alt); border-radius: var(--radius-md); font-style: normal;">
+            <h3 class="text-base mb-2">Contact the Research Team</h3>
+            {trial.contactName && <p class="font-semibold">{trial.contactName}</p>}
+            <div class="flex flex-wrap gap-4 mt-2">
+              {trial.contactEmail && (
+                <a href={`mailto:${trial.contactEmail}`}>Email the team</a>
+              )}
+              {trial.contactPhone && (
+                <a href={`tel:${trial.contactPhone}`}>{trial.contactPhone}</a>
+              )}
+            </div>
+          </address>
+        )}
+      </section>
+
+      <!-- While You Wait -->
+      <aside class="mb-10 p-6" style="background: var(--color-bg-alt); border-radius: var(--radius-lg);" aria-label="While you wait">
+        <h2 class="text-lg mb-2">While You Wait to Hear Back</h2>
+        <p style="color: var(--color-text-muted);">
+          Connecting with others who share your condition can make a real difference.
+        </p>
+        <a
+          href={siteConfig.supportAffiliateUrl}
+          rel="sponsored noopener noreferrer"
+          class="btn-secondary mt-3 text-sm"
+        >
+          Find a {primaryCondition} support community &rarr;
+        </a>
+      </aside>
+
+      <!-- Email Capture -->
+      <EmailCapture
+        heading="Get Updates on This Trial"
+        description="We'll email you if the status of this trial changes — if it starts recruiting, closes, or reports results."
+        subject={`TrialFinder — Trial Watch: ${trial.nctId} ${briefTitleTruncated}`}
+        trialId={trial.nctId}
+        condition={primaryCondition}
+        buttonText="Watch This Trial →"
+      />
+
+      <!-- FAQ -->
+      <section aria-labelledby="faq-heading" class="mt-10">
+        <h2 id="faq-heading" class="mb-4">Questions About This Trial</h2>
+        {faqs.map(faq => (
+          <details>
+            <summary>{faq.question}</summary>
+            <p>{faq.answer}</p>
+          </details>
+        ))}
+      </section>
+    </article>
+  </div>
+</BaseLayout>

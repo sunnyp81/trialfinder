@@ -1,0 +1,166 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { buildArticleSchema, buildBreadcrumbSchema } from '@/lib/schema';
+import { siteConfig } from '@/lib/site-config';
+
+const title = "What Is a Clinical Trial? A Patient's Guide";
+const description = "Learn what clinical trials are and how they work in plain English. Covers trial types, randomization, placebos, informed consent, and who runs studies.";
+const url = `${siteConfig.url}/guides/what-is-a-clinical-trial/`;
+
+const breadcrumbItems = [
+  { label: 'Guides', href: '/guides/' },
+  { label: 'What Is a Clinical Trial?' },
+];
+
+const schema = [
+  buildArticleSchema({
+    title,
+    description,
+    url,
+    datePublished: '2026-03-26',
+    dateModified: '2026-03-26',
+  }),
+  buildBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Guides', url: `${siteConfig.url}/guides/` },
+    { name: 'What Is a Clinical Trial?', url },
+  ]),
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema} type="article">
+  <article class="container-narrow section-sm">
+    <Breadcrumb items={breadcrumbItems} />
+
+    <h1>{title}</h1>
+    <p style="color: var(--color-text-muted);">Last updated: March 2026 &middot; 6 min read</p>
+
+    <div class="prose">
+      <p>
+        If your doctor has mentioned a clinical trial, or you have come across one while researching a health condition, you probably have questions. What exactly happens in a trial? Is it safe? Will you get a placebo instead of real treatment? This guide answers those questions in plain English so you can decide whether exploring a trial makes sense for you.
+      </p>
+
+      <section aria-labelledby="what-is">
+        <h2 id="what-is">What is a clinical trial?</h2>
+        <p>
+          A clinical trial is a carefully designed research study that tests a medical treatment, device, or approach in people. Trials follow strict rules set out before the study begins, and every step is reviewed by independent ethics boards to protect participants.
+        </p>
+        <p>
+          Most new medications, vaccines, and therapies cannot become widely available until they have been tested in clinical trials. Without these studies, doctors would have no reliable way to know whether a treatment works, what dose is best, or what side effects might occur.
+        </p>
+        <p>
+          Clinical trials are not limited to drugs. They can test surgical techniques, medical devices, behavioral therapies, screening methods, and prevention strategies. Some trials study how to improve quality of life for people living with chronic conditions.
+        </p>
+      </section>
+
+      <section aria-labelledby="why-exist">
+        <h2 id="why-exist">Why do clinical trials exist?</h2>
+        <p>
+          Every treatment your doctor prescribes today was once tested in a clinical trial. Before a treatment reaches your pharmacy shelf, researchers need to answer three fundamental questions: Does it work? Is it safe? Is it better than what already exists?
+        </p>
+        <p>
+          Laboratory studies and animal research can only go so far. The human body is complex, and the only way to confirm that a treatment is both safe and effective for people is to test it in people, with their informed, voluntary consent.
+        </p>
+        <p>
+          Trials also help researchers understand how a treatment interacts with different age groups, ethnicities, and coexisting health conditions. This information shapes prescribing guidelines that doctors rely on every day.
+        </p>
+      </section>
+
+      <section aria-labelledby="who-runs">
+        <h2 id="who-runs">Who runs clinical trials?</h2>
+        <p>
+          Clinical trials are sponsored by a range of organizations. Pharmaceutical and biotech companies fund many trials to develop new drugs. Academic medical centers and universities run trials to advance scientific understanding. Government agencies like the
+          <a href="https://www.nih.gov/" target="_blank" rel="noopener noreferrer">National Institutes of Health (NIH)</a>
+          fund thousands of trials each year, particularly for conditions that may not attract commercial investment.
+        </p>
+        <p>
+          Regardless of who sponsors a trial, the day-to-day research is led by a principal investigator, usually a doctor or senior scientist. A research team that may include nurses, coordinators, and data analysts supports the investigator.
+        </p>
+        <p>
+          Every trial must be approved and monitored by an Institutional Review Board (IRB) or ethics committee. This independent panel reviews the study design, consent documents, and safety protocols before a single participant is enrolled.
+        </p>
+      </section>
+
+      <section aria-labelledby="types">
+        <h2 id="types">Types of clinical trials</h2>
+        <p>
+          Clinical trials fall into several broad categories, each answering a different research question:
+        </p>
+        <ul>
+          <li><strong>Treatment trials</strong> test new drugs, drug combinations, surgical approaches, or radiation therapies.</li>
+          <li><strong>Prevention trials</strong> look for ways to prevent disease in people who have never had it, or to prevent it from returning. Vaccine trials fall into this category.</li>
+          <li><strong>Screening trials</strong> evaluate new methods for detecting diseases earlier, when they may be easier to treat.</li>
+          <li><strong>Diagnostic trials</strong> study better tests or procedures for identifying a disease or condition.</li>
+          <li><strong>Quality-of-life trials</strong> explore ways to improve comfort and daily functioning for people with chronic or serious illnesses.</li>
+        </ul>
+        <p>
+          Trials are also classified by <a href="/guides/what-are-trial-phases/">phase</a>, which tells you how far along the research is and roughly how many people are involved.
+        </p>
+      </section>
+
+      <section aria-labelledby="randomization">
+        <h2 id="randomization">Randomization: why participants are assigned by chance</h2>
+        <p>
+          In many trials, participants are randomly assigned to different groups. One group receives the new treatment, while another receives the current standard treatment or a placebo. This process is called randomization.
+        </p>
+        <p>
+          Randomization removes bias. Without it, researchers might unconsciously assign healthier patients to the new treatment group, which would make results unreliable. By letting a computer decide group assignments, the trial produces results that doctors and regulators can trust.
+        </p>
+        <p>
+          You will always be told before you enroll whether a trial involves randomization and what the possible group assignments are.
+        </p>
+      </section>
+
+      <section aria-labelledby="placebos">
+        <h2 id="placebos">Placebos: what they are and when they are used</h2>
+        <p>
+          A placebo is an inactive substance, like a sugar pill, that looks identical to the treatment being tested. Placebos help researchers measure whether improvements are caused by the treatment itself or by the psychological effect of receiving care.
+        </p>
+        <p>
+          Not all trials use placebos. When an effective treatment already exists for a condition, ethics guidelines require that participants in the comparison group receive that existing treatment rather than a placebo. You will never be given a placebo if it would mean going without necessary care.
+        </p>
+        <p>
+          In some trials, neither the participant nor the research team knows who is receiving the treatment and who is receiving the placebo. This is called a "double-blind" design, and it further reduces bias in the results.
+        </p>
+      </section>
+
+      <section aria-labelledby="consent">
+        <h2 id="consent">Informed consent: your right to understand everything</h2>
+        <p>
+          Before joining any clinical trial, you go through an informed consent process. The research team provides a detailed document that explains the purpose of the study, what will happen during the trial, potential risks and benefits, alternative treatments available, and your right to leave the trial at any time.
+        </p>
+        <p>
+          Informed consent is not just a form to sign. It is an ongoing conversation. You can ask questions at any point, before and during the trial. If new information arises that could affect your willingness to participate, the research team is required to inform you.
+        </p>
+        <p>
+          Signing the consent form does not lock you in. You can withdraw from a trial at any time, for any reason, without affecting your regular medical care.
+        </p>
+      </section>
+
+      <section aria-labelledby="safety">
+        <h2 id="safety">How your safety is protected</h2>
+        <p>
+          Multiple layers of oversight protect participants in clinical trials. The IRB reviews and approves the study before it begins. A Data Safety Monitoring Board (DSMB), an independent committee, reviews results as the trial progresses and can recommend stopping the trial early if safety concerns arise or if the treatment is clearly effective.
+        </p>
+        <p>
+          Federal regulations in the United States, enforced by the
+          <a href="https://www.fda.gov/" target="_blank" rel="noopener noreferrer">Food and Drug Administration (FDA)</a>,
+          set strict standards for how trials must be designed and conducted. Most trials are also registered on
+          <a href="https://clinicaltrials.gov/" target="_blank" rel="noopener noreferrer">ClinicalTrials.gov</a>,
+          a public database where anyone can review the study details.
+        </p>
+      </section>
+
+      <section aria-labelledby="next-steps">
+        <h2 id="next-steps">Next steps</h2>
+        <p>
+          Understanding what a clinical trial is represents the first step. If you want to dig deeper, explore our guide on <a href="/guides/what-are-trial-phases/">clinical trial phases</a> to learn what each stage of research involves, or read our step-by-step walkthrough on <a href="/guides/how-to-join-a-clinical-trial/">how to join a clinical trial</a>.
+        </p>
+        <p>
+          You can also browse trials by condition right here on TrialFinder. Every listing is translated into plain English so you can quickly see whether a trial might be relevant to you or someone you care about.
+        </p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

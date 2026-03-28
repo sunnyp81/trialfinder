@@ -1,0 +1,100 @@
+---
+import { siteConfig } from '@/lib/site-config';
+
+interface Props {
+  heading: string;
+  description: string;
+  subject: string;
+  condition?: string;
+  trialId?: string;
+  buttonText?: string;
+  showConditionField?: boolean;
+  showRoleField?: boolean;
+}
+
+const {
+  heading,
+  description,
+  subject,
+  condition = '',
+  trialId = '',
+  buttonText = 'Send Me Trial Alerts →',
+  showConditionField = false,
+  showRoleField = false,
+} = Astro.props;
+
+const headingId = heading.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+---
+
+<section
+  class="section-sm"
+  style="background: var(--color-bg-alt); border-radius: var(--radius-lg); padding: 2rem;"
+  aria-labelledby={headingId}
+>
+  <h2 id={headingId} class="text-xl mb-2">{heading}</h2>
+  <p class="mb-4" style="color: var(--color-text-muted);">{description}</p>
+
+  <form action="https://api.staticforms.xyz/submit" method="post" class="max-w-md">
+    <input type="hidden" name="accessKey" value={siteConfig.staticFormsKey} />
+    <input type="hidden" name="subject" value={subject} />
+    <input type="hidden" name="redirectTo" value={`${siteConfig.url}/thanks/`} />
+    {trialId && <input type="hidden" name="$trial_id" value={trialId} />}
+    {condition && <input type="hidden" name="$condition" value={condition} />}
+
+    <div class="form-group">
+      <label for={`${headingId}-name`}>Your name</label>
+      <input
+        id={`${headingId}-name`}
+        type="text"
+        name="name"
+        required
+        placeholder="Your first name"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for={`${headingId}-email`}>Email address</label>
+      <input
+        id={`${headingId}-email`}
+        type="email"
+        name="email"
+        required
+        placeholder="your@email.com"
+      />
+    </div>
+
+    {showConditionField && (
+      <div class="form-group">
+        <label for={`${headingId}-condition`}>Condition you're interested in</label>
+        <input
+          id={`${headingId}-condition`}
+          type="text"
+          name="$condition"
+          placeholder="e.g. pancreatic cancer, MS, lupus"
+        />
+      </div>
+    )}
+
+    {showRoleField && (
+      <div class="form-group">
+        <label for={`${headingId}-role`}>Are you a patient or caregiver?</label>
+        <select id={`${headingId}-role`} name="$role">
+          <option value="">Prefer not to say</option>
+          <option value="patient">Patient</option>
+          <option value="caregiver">Caregiver / family member</option>
+          <option value="professional">Healthcare professional</option>
+        </select>
+      </div>
+    )}
+
+    <!-- Honeypot -->
+    <input type="text" name="honeypot" style="display:none" tabindex="-1" aria-hidden="true" />
+
+    <button type="submit" class="btn-primary mt-2">{buttonText}</button>
+  </form>
+
+  <p class="form-note">
+    We never sell your information. Unsubscribe any time.
+    Read our <a href="/privacy/">privacy policy</a>.
+  </p>
+</section>

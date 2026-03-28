@@ -1,0 +1,132 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { siteConfig } from '@/lib/site-config';
+
+const aboutSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  mainEntity: {
+    '@type': 'Organization',
+    name: 'TrialFinder',
+    url: siteConfig.url,
+    description: siteConfig.description,
+    foundingDate: '2026',
+    knowsAbout: [
+      'Clinical trials',
+      'Patient advocacy',
+      'Health literacy',
+      'Medical eligibility criteria',
+      'ClinicalTrials.gov',
+    ],
+  },
+};
+---
+
+<BaseLayout
+  title="About TrialFinder"
+  description="TrialFinder translates clinical trial eligibility criteria into plain English so patients and caregivers can find trials they actually understand."
+  schema={aboutSchema}
+>
+  <div class="container-narrow section-sm">
+    <article class="prose">
+      <h1>About TrialFinder</h1>
+
+      <section aria-labelledby="mission-heading">
+        <h2 id="mission-heading">Our Mission</h2>
+        <p>
+          TrialFinder exists to translate clinical trials into plain English.
+          Every day, thousands of clinical trials recruit participants across the
+          United States, yet most people never find one that could help them. The
+          reason is simple: eligibility criteria are written by researchers for
+          researchers, packed with medical jargon, abbreviations, and inclusion
+          logic that is nearly impossible for a patient or caregiver to parse.
+        </p>
+        <p>
+          We believe everyone deserves to understand whether a clinical trial
+          might be relevant to them, without needing a medical degree to read the
+          requirements.
+        </p>
+      </section>
+
+      <section aria-labelledby="why-heading">
+        <h2 id="why-heading">Why This Matters</h2>
+        <p>
+          Clinical trials are the engine of medical progress, but they
+          consistently struggle with enrollment. Studies show that around 80% of
+          trials fail to meet recruitment timelines, and many shut down entirely
+          because they cannot find enough participants. A major barrier is
+          comprehension. When a potential participant reads a page of dense
+          inclusion and exclusion criteria, they often give up before they even
+          determine whether they qualify.
+        </p>
+        <p>
+          TrialFinder removes that barrier. We take the original eligibility text
+          and rewrite it in straightforward language, keeping the medical accuracy
+          intact while making the meaning clear.
+        </p>
+      </section>
+
+      <section aria-labelledby="how-heading">
+        <h2 id="how-heading">How It Works</h2>
+        <p>
+          We pull trial data directly from
+          <a href="https://clinicaltrials.gov" target="_blank" rel="noopener noreferrer">ClinicalTrials.gov</a>,
+          the public registry maintained by the
+          <a href="https://www.nih.gov" target="_blank" rel="noopener noreferrer">National Institutes of Health (NIH)</a>
+          and the
+          <a href="https://www.fda.gov" target="_blank" rel="noopener noreferrer">U.S. Food and Drug Administration (FDA)</a>.
+          Each trial's eligibility criteria is then rewritten using AI,
+          reviewed for accuracy, and presented in a "Who Can Join" / "Who Cannot
+          Join" format at an 8th-grade reading level.
+        </p>
+        <p>Our data is updated regularly to reflect new and modified trial records.</p>
+      </section>
+
+      <section aria-labelledby="editorial-heading">
+        <h2 id="editorial-heading">Editorial Standards</h2>
+        <p>
+          Every simplified eligibility summary on TrialFinder follows strict editorial guidelines:
+        </p>
+        <ul>
+          <li>Medical jargon is replaced with plain English. Where a medical term is unavoidable, it is defined in parentheses.</li>
+          <li>Lab value ranges are translated into descriptions patients can understand — "normal kidney function" rather than "eGFR &ge; 60 mL/min".</li>
+          <li>Original source criteria are always linked so patients and doctors can verify the full details on ClinicalTrials.gov.</li>
+          <li>We never alter the medical meaning of eligibility criteria — only the language used to express it.</li>
+          <li>Content is reviewed against the original trial record before publication.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="not-heading">
+        <h2 id="not-heading">What We Are Not</h2>
+        <p>
+          TrialFinder is an informational resource, not a medical service.
+          Nothing on this site constitutes medical advice, diagnosis, or
+          treatment recommendations. Always consult your doctor or healthcare
+          provider before making decisions about participating in a clinical
+          trial. The simplified descriptions on this site are designed to help
+          you start a conversation with your care team, not to replace
+          professional medical guidance.
+        </p>
+      </section>
+
+      <section aria-labelledby="data-heading">
+        <h2 id="data-heading">Data Sources</h2>
+        <p>
+          All trial data is sourced from
+          <a href="https://clinicaltrials.gov" target="_blank" rel="noopener noreferrer">ClinicalTrials.gov</a>,
+          a database of privately and publicly funded clinical studies conducted
+          around the world. ClinicalTrials.gov is maintained by the
+          <a href="https://www.nlm.nih.gov/" target="_blank" rel="noopener noreferrer">U.S. National Library of Medicine</a>
+          at the National Institutes of Health. Trial registration is required by
+          law (FDAAA 801) for most interventional studies, making ClinicalTrials.gov
+          the most comprehensive public source of clinical trial information available.
+        </p>
+      </section>
+
+      <p class="text-sm" style="color: var(--color-text-light); margin-top: 3rem;">
+        Questions or corrections? Contact us at
+        <a href="mailto:hello@trialfinder.co">hello@trialfinder.co</a>.
+      </p>
+    </article>
+  </div>
+</BaseLayout>

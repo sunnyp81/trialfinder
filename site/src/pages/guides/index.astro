@@ -1,0 +1,148 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { siteConfig } from '@/lib/site-config';
+import { buildBreadcrumbSchema } from '@/lib/schema';
+
+const title = "Patient Guides — Understanding Clinical Trials";
+const description = "Free patient guides explaining clinical trials in plain English. Learn about phases, eligibility, informed consent, pediatric trials, rare diseases, and more.";
+const url = `${siteConfig.url}/guides/`;
+
+const breadcrumbItems = [
+  { label: 'Guides' },
+];
+
+const schema = [
+  buildBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Guides', url },
+  ]),
+];
+
+const guides = [
+  {
+    title: 'What Is a Clinical Trial?',
+    href: '/guides/what-is-a-clinical-trial/',
+    desc: 'The basics of clinical trials — what they are, why they exist, and how your safety is protected.',
+  },
+  {
+    title: 'What Are Clinical Trial Phases?',
+    href: '/guides/what-are-trial-phases/',
+    desc: 'Phase 1 through Phase 4 explained — what each stage tests, how many people are involved, and how long they take.',
+  },
+  {
+    title: 'How to Join a Clinical Trial',
+    href: '/guides/how-to-join-a-clinical-trial/',
+    desc: 'A step-by-step walkthrough from finding a trial to enrolling, including screening and informed consent.',
+  },
+  {
+    title: 'Questions to Ask Your Doctor',
+    href: '/guides/questions-to-ask-your-doctor/',
+    desc: '20 essential questions covering risks, logistics, costs, alternatives, and your rights as a participant.',
+  },
+  {
+    title: 'How to Read Eligibility Criteria',
+    href: '/guides/how-to-read-eligibility-criteria/',
+    desc: 'Decode inclusion and exclusion rules, lab values, and medical jargon so you know if a trial fits you.',
+  },
+  {
+    title: 'Understanding Informed Consent',
+    href: '/guides/understanding-informed-consent/',
+    desc: 'What informed consent really means, what the document should cover, and your rights before and after signing.',
+  },
+  {
+    title: 'Clinical Trials for Children',
+    href: '/guides/clinical-trials-for-children/',
+    desc: 'How pediatric trials differ from adult trials, assent vs consent, and safety protections for young participants.',
+  },
+  {
+    title: 'Clinical Trials for Rare Diseases',
+    href: '/guides/clinical-trials-for-rare-diseases/',
+    desc: 'How rare disease trials work, the Orphan Drug Act, patient registries, and resources for finding studies.',
+  },
+  {
+    title: 'Caregiver Guide to Clinical Trials',
+    href: '/guides/caregiver-guide-to-clinical-trials/',
+    desc: 'Practical guidance for caregivers supporting a loved one through a clinical trial, from logistics to emotional support.',
+  },
+  {
+    title: 'Clinical Trial Myths — Debunked',
+    href: '/guides/clinical-trial-myths/',
+    desc: 'Common myths about clinical trials separated from fact — placebos, safety, eligibility, costs, and more.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <div class="container-narrow section-sm">
+    <Breadcrumb items={breadcrumbItems} />
+
+    <h1>{title}</h1>
+    <p style="color: var(--color-text-muted); max-width: 42rem;">
+      Whether you are considering a clinical trial for yourself, a family member, or someone you care for, these guides explain how trials work in plain English — no medical degree required.
+    </p>
+
+    <div class="guide-grid" style="margin-top: 2rem;">
+      {guides.map(guide => (
+        <a href={guide.href} class="guide-card">
+          <h2 class="guide-card__title">{guide.title}</h2>
+          <p class="guide-card__desc">{guide.desc}</p>
+          <span class="guide-card__link">Read guide &rarr;</span>
+        </a>
+      ))}
+    </div>
+
+    <div class="prose" style="margin-top: 3rem;">
+      <p>
+        Have a specific question? Check our <a href="/faq/">frequently asked questions</a> page for quick answers, or <a href="/">search for a clinical trial</a> by condition.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .guide-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    border: 1px solid var(--color-border, #e5e0d8);
+    border-radius: 0.5rem;
+    background: var(--color-surface, #fff);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+
+  .guide-card:hover {
+    border-color: var(--color-primary, #4a7c6f);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .guide-card__title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    color: var(--color-heading, #1a1a1a);
+  }
+
+  .guide-card__desc {
+    font-size: 0.925rem;
+    color: var(--color-text-muted, #6b6b6b);
+    margin: 0 0 auto;
+    line-height: 1.5;
+  }
+
+  .guide-card__link {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-primary, #4a7c6f);
+  }
+</style>

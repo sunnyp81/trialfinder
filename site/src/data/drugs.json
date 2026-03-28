@@ -1,0 +1,4 @@
+[
+  {"name": "Example Drug", "slug": "example-drug", "type": "Drug", "trialCount": 1},
+  {"name": "Novel Medication", "slug": "novel-medication", "type": "Drug", "trialCount": 1}
+]

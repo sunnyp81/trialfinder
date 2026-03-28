@@ -1,0 +1,135 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { siteConfig } from '@/lib/site-config';
+import { buildBreadcrumbSchema } from '@/lib/schema';
+import { glossaryTerms } from '@/data/glossary';
+
+const categoryLabels: Record<string, string> = {
+  'trial-design': 'Trial Design',
+  'eligibility': 'Eligibility',
+  'medical': 'Medical',
+  'regulatory': 'Regulatory',
+  'statistics': 'Statistics',
+};
+
+const categoryColors: Record<string, string> = {
+  'trial-design': 'var(--color-accent)',
+  'eligibility': '#2a9d8f',
+  'medical': '#e76f51',
+  'regulatory': '#457b9d',
+  'statistics': '#6c5ce7',
+};
+
+
+export function getStaticPaths() {
+  return glossaryTerms.map(term => ({
+    params: { slug: term.slug },
+    props: { term },
+  }));
+}
+
+const { term } = Astro.props;
+
+const relatedTermObjects = term.relatedTerms
+  .map(slug => glossaryTerms.find(t => t.slug === slug))
+  .filter(Boolean) as GlossaryTerm[];
+
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: 'Home', url: siteConfig.url },
+  { name: 'Glossary', url: `${siteConfig.url}/glossary/` },
+  { name: term.term, url: `${siteConfig.url}/glossary/${term.slug}/` },
+]);
+
+const definedTermSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTerm',
+  name: term.term,
+  description: term.definition,
+  inDefinedTermSet: {
+    '@type': 'DefinedTermSet',
+    name: 'Clinical Trial Glossary',
+    url: `${siteConfig.url}/glossary/`,
+  },
+};
+
+const schemas = [breadcrumbSchema, definedTermSchema];
+---
+
+<BaseLayout
+  title={`${term.term} — Plain English Definition`}
+  description={`What does ${term.term.toLowerCase()} mean in clinical trials? Plain English definition for patients and caregivers.`}
+  schema={schemas}
+>
+  <div class="container section-sm">
+    <Breadcrumb items={[
+      { label: 'Glossary', href: '/glossary/' },
+      { label: term.term },
+    ]} />
+
+    <article class="container-narrow">
+      <header class="mb-8">
+        <span class="pill" style={`background: ${categoryColors[term.category]}22; color: ${categoryColors[term.category]}; border: 1px solid ${categoryColors[term.category]}44;`}>
+          {categoryLabels[term.category]}
+        </span>
+        <h1 class="mb-3 mt-3">{term.term} — What It Means in Clinical Trials</h1>
+      </header>
+
+      <div class="prose">
+        <section aria-labelledby="definition-heading" class="mb-8">
+          <h2 id="definition-heading">Plain English Definition</h2>
+          <p>{term.definition}</p>
+        </section>
+
+        <section aria-labelledby="why-heading" class="mb-8">
+          <h2 id="why-heading">Why It Matters</h2>
+          <p>{term.whyItMatters}</p>
+        </section>
+
+        <section aria-labelledby="example-heading" class="mb-8">
+          <h2 id="example-heading">Example</h2>
+          <div class="example-box">
+            <p>{term.example}</p>
+          </div>
+        </section>
+      </div>
+
+      {relatedTermObjects.length > 0 && (
+        <aside aria-labelledby="related-heading" class="mb-10 p-6" style="background: var(--color-bg-alt); border-radius: var(--radius-lg);">
+          <h2 id="related-heading" class="text-lg mb-3">Related Terms</h2>
+          <ul class="space-y-2" style="list-style: none; padding: 0;">
+            {relatedTermObjects.map(related => (
+              <li>
+                <a href={`/glossary/${related.slug}/`}>
+                  <strong>{related.term}</strong>
+                </a>
+                <span class="text-sm" style="color: var(--color-text-muted);"> — {related.definition.split('.')[0]}.</span>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )}
+
+      <div class="mb-10 p-5" style="background: var(--color-bg-alt); border-radius: var(--radius-lg); text-align: center;">
+        <p class="mb-3">Need help understanding eligibility criteria?</p>
+        <a href="/guides/how-to-read-eligibility-criteria/" class="btn-primary">
+          How to Read Eligibility Criteria &rarr;
+        </a>
+      </div>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .example-box {
+    background: var(--color-bg-alt);
+    border-left: 4px solid var(--color-accent);
+    padding: 1rem 1.25rem;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-style: italic;
+    color: var(--color-text-muted);
+  }
+  .example-box p {
+    margin: 0;
+  }
+</style>

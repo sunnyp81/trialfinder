@@ -1,0 +1,154 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import TrialCard from '@/components/TrialCard.astro';
+import { siteConfig } from '@/lib/site-config';
+import { buildBreadcrumbSchema } from '@/lib/schema';
+
+import conditionsData from '@/data/conditions.json';
+import statesData from '@/data/states.json';
+import trialsData from '@/data/trials.json';
+
+export function getStaticPaths() {
+  const paths: any[] = [];
+
+  for (const condition of conditionsData) {
+    const condLower = condition.name.toLowerCase();
+
+    for (const state of statesData) {
+      const matchingTrials = trialsData.filter(t => {
+        const matchesCond = t.conditions.some((c: string) =>
+          c.toLowerCase().includes(condLower) || condLower.includes(c.toLowerCase())
+        );
+        const matchesState = t.states.some((s: string) =>
+          s.toLowerCase().replace(/\s+/g, '-') === state.slug
+        );
+        return matchesCond && matchesState;
+      });
+
+      if (matchingTrials.length > 0) {
+        paths.push({
+          params: { slug: condition.slug, state: state.slug },
+          props: { condition, state, trials: matchingTrials },
+        });
+      }
+    }
+  }
+
+  return paths;
+}
+
+const { condition, state, trials } = Astro.props;
+
+// Other states with trials for this condition (up to 8)
+const condLower = condition.name.toLowerCase();
+const otherStates = statesData
+  .filter(s => s.slug !== state.slug)
+  .filter(s => {
+    return trialsData.some(t => {
+      const matchesCond = t.conditions.some((c: string) =>
+        c.toLowerCase().includes(condLower) || condLower.includes(c.toLowerCase())
+      );
+      const matchesState = t.states.some((st: string) =>
+        st.toLowerCase().replace(/\s+/g, '-') === s.slug
+      );
+      return matchesCond && matchesState;
+    });
+  })
+  .slice(0, 8);
+
+// Other conditions with trials in this state (up to 5)
+const otherConditions = conditionsData
+  .filter(c => c.slug !== condition.slug)
+  .filter(c => {
+    const cLower = c.name.toLowerCase();
+    return trialsData.some(t => {
+      const matchesCond = t.conditions.some((tc: string) =>
+        tc.toLowerCase().includes(cLower) || cLower.includes(tc.toLowerCase())
+      );
+      const matchesState = t.states.some((s: string) =>
+        s.toLowerCase().replace(/\s+/g, '-') === state.slug
+      );
+      return matchesCond && matchesState;
+    });
+  })
+  .slice(0, 5);
+
+const schemas = [
+  buildBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: condition.name, url: `${siteConfig.url}/condition/${condition.slug}/` },
+    { name: state.name, url: `${siteConfig.url}/condition/${condition.slug}/${state.slug}/` },
+  ]),
+];
+---
+
+<BaseLayout
+  title={`${condition.name} Clinical Trials in ${state.name} | TrialFinder`}
+  description={`${trials.length} ${condition.name.toLowerCase()} clinical trials recruiting in ${state.name}. Eligibility explained in plain English.`}
+  schema={schemas}
+>
+  <div class="container section-sm">
+    <Breadcrumb items={[
+      { label: condition.name, href: `/condition/${condition.slug}/` },
+      { label: state.name },
+    ]} />
+
+    <header class="mb-8">
+      <h1 class="mb-3">{condition.name} Clinical Trials in {state.name} — Plain English</h1>
+      <p style="color: var(--color-text-muted);">
+        {trials.length} trial{trials.length !== 1 ? 's' : ''} currently recruiting in {state.name}
+      </p>
+    </header>
+
+    <section aria-labelledby="trials-heading" class="mb-10">
+      <h2 id="trials-heading" class="mb-4">
+        Recruiting Now ({trials.length})
+      </h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {trials.map((trial: any) => (
+          <TrialCard trial={trial} />
+        ))}
+      </div>
+    </section>
+
+    {otherStates.length > 0 && (
+      <aside aria-labelledby="other-states-heading" class="mb-10 p-6" style="background: var(--color-bg-alt); border-radius: var(--radius-lg);">
+        <h2 id="other-states-heading" class="text-lg mb-3">{condition.name} Trials in Other States</h2>
+        <ul class="space-y-2" style="list-style: none; padding: 0;">
+          {otherStates.map((s: any) => (
+            <li>
+              <a href={`/condition/${condition.slug}/${s.slug}/`} style="text-decoration: none;">
+                {s.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    )}
+
+    {otherConditions.length > 0 && (
+      <aside aria-labelledby="other-conditions-heading" class="mb-10 p-6" style="background: var(--color-bg-alt); border-radius: var(--radius-lg);">
+        <h2 id="other-conditions-heading" class="text-lg mb-3">Other Conditions in {state.name}</h2>
+        <ul class="space-y-2" style="list-style: none; padding: 0;">
+          {otherConditions.map((c: any) => (
+            <li>
+              <a href={`/condition/${c.slug}/${state.slug}/`} style="text-decoration: none;">
+                {c.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    )}
+
+    <nav class="mb-10" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <a href={`/condition/${condition.slug}/`} class="btn-secondary text-sm">
+        &larr; All {condition.name} trials
+      </a>
+      <a href={`/state/${state.slug}/`} class="btn-secondary text-sm">
+        All trials in {state.name} &rarr;
+      </a>
+    </nav>
+  </div>
+</BaseLayout>

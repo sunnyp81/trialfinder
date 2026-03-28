@@ -1,0 +1,40 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page Not Found"
+  description="The page you're looking for doesn't exist. Browse clinical trials by condition or search for a specific trial."
+  noIndex={true}
+>
+  <div class="container-narrow section text-center">
+    <h1 class="mb-4">Page Not Found</h1>
+    <p class="text-lg mb-8" style="color: var(--color-text-muted);">
+      The page you're looking for may have moved or no longer exists.
+      Try searching for a condition or browsing our trial listings.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+      <a href="/" class="btn-primary">Search for Trials</a>
+      <a href="/conditions/" class="btn-secondary">Browse All Conditions</a>
+    </div>
+
+    <div class="text-left max-w-md mx-auto">
+      <h2 class="text-lg mb-3">Popular Conditions</h2>
+      <ul class="space-y-2" style="list-style: none; padding: 0;">
+        <li><a href="/condition/breast-cancer/">Breast Cancer</a></li>
+        <li><a href="/condition/type-2-diabetes/">Type 2 Diabetes</a></li>
+        <li><a href="/condition/lung-cancer/">Lung Cancer</a></li>
+        <li><a href="/condition/alzheimers-disease/">Alzheimer's Disease</a></li>
+        <li><a href="/condition/depression/">Depression</a></li>
+      </ul>
+
+      <h2 class="text-lg mb-3 mt-6">Patient Guides</h2>
+      <ul class="space-y-2" style="list-style: none; padding: 0;">
+        <li><a href="/guides/what-is-a-clinical-trial/">What Is a Clinical Trial?</a></li>
+        <li><a href="/guides/how-to-join-a-clinical-trial/">How to Join a Trial</a></li>
+        <li><a href="/guides/questions-to-ask-your-doctor/">Questions for Your Doctor</a></li>
+      </ul>
+    </div>
+  </div>
+</BaseLayout>

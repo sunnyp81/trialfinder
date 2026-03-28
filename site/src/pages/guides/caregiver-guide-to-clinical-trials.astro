@@ -1,0 +1,145 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { siteConfig } from '@/lib/site-config';
+import { buildArticleSchema, buildBreadcrumbSchema } from '@/lib/schema';
+
+const title = "Caregiver Guide to Clinical Trials — Supporting a Loved One";
+const description = "Practical guidance for caregivers supporting someone in a clinical trial, explained in plain English. Covers appointments, records, side effects, and self-care.";
+const url = `${siteConfig.url}/guides/caregiver-guide-to-clinical-trials/`;
+
+const breadcrumbItems = [
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Caregiver Guide to Clinical Trials' },
+];
+
+const schema = [
+  buildArticleSchema({
+    title,
+    description,
+    url,
+    datePublished: '2026-03-26',
+    dateModified: '2026-03-26',
+  }),
+  buildBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Guides', url: `${siteConfig.url}/guides/` },
+    { name: 'Caregiver Guide to Clinical Trials', url },
+  ]),
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema} type="article">
+  <article class="container-narrow section-sm">
+    <Breadcrumb items={breadcrumbItems} />
+
+    <h1>{title}</h1>
+    <p style="color: var(--color-text-muted);">Last updated: March 2026 &middot; 6 min read</p>
+
+    <div class="prose">
+      <p>
+        When someone you care about decides to join a clinical trial, you become part of the journey too. As a caregiver, you may be the one driving to appointments, tracking medications, watching for side effects, and providing emotional support through uncertain moments. This guide is written for you — the person standing alongside the participant.
+      </p>
+
+      <section aria-labelledby="role">
+        <h2 id="role">Understanding the caregiver's role</h2>
+        <p>
+          Caregivers in clinical trials serve as advocates, organizers, and emotional anchors. Your involvement can range from minimal, perhaps just providing transportation, to deeply hands-on, such as administering medications, recording symptoms, and communicating with the research team on behalf of the participant.
+        </p>
+        <p>
+          The research team will typically welcome your involvement. Many trial coordinators prefer having a caregiver present at appointments because you can provide observations the participant may not notice or remember. You are also an extra pair of ears when complex information is being discussed.
+        </p>
+        <p>
+          That said, the participant remains the decision-maker. Unless you hold legal authority such as power of attorney or legal guardianship, your role is to support and inform rather than to decide. Respecting the participant's autonomy is essential, even when you disagree with their choices.
+        </p>
+      </section>
+
+      <section aria-labelledby="appointments">
+        <h2 id="appointments">What to expect at appointments</h2>
+        <p>
+          Clinical trial appointments can be longer and more frequent than standard medical visits. Here is what a typical visit might involve:
+        </p>
+        <ul>
+          <li><strong>Check-in and vitals:</strong> Blood pressure, weight, temperature, and a review of how the participant has been feeling since the last visit.</li>
+          <li><strong>Lab work:</strong> Blood draws, urine samples, or other tests specified in the trial protocol. Some visits may require fasting beforehand.</li>
+          <li><strong>Treatment administration:</strong> If the trial involves an infusion, injection, or supervised medication, this is done during the visit. Some treatments take minutes, others take hours.</li>
+          <li><strong>Questionnaires and assessments:</strong> The participant may be asked about symptoms, quality of life, mood, or physical function. You may be asked to provide your observations as well.</li>
+          <li><strong>Meeting with the research team:</strong> The coordinator or investigator will review any concerns, answer questions, and discuss what to watch for before the next visit.</li>
+        </ul>
+        <p>
+          Bring a notebook, water, snacks, and something to pass the time. Some visits can stretch to several hours, especially early in the trial when baseline testing is most intensive.
+        </p>
+      </section>
+
+      <section aria-labelledby="medications">
+        <h2 id="medications">Managing medications and side effects</h2>
+        <p>
+          If the participant takes the trial medication at home, you may play a key role in medication management:
+        </p>
+        <ul>
+          <li><strong>Follow the protocol exactly.</strong> The research team will explain dosing schedules, storage requirements, and whether the medication should be taken with food. Deviating from these instructions can affect both safety and study results.</li>
+          <li><strong>Track side effects.</strong> Keep a simple daily log noting any new symptoms, their severity, and when they started. Even minor observations like "felt more tired than usual" can be valuable to the research team.</li>
+          <li><strong>Know the emergency contacts.</strong> The research team will provide a phone number for urgent concerns outside of regular appointments. Save this number in your phone. Know the difference between side effects that can wait until the next appointment and symptoms that require immediate contact.</li>
+          <li><strong>Report everything.</strong> Never dismiss a side effect as "probably nothing." The research team needs complete information to ensure the participant's safety and to build an accurate picture of how the treatment affects people.</li>
+        </ul>
+        <p>
+          If the participant takes other medications alongside the trial treatment, make sure the research team has a complete list. Some drug interactions can be serious. Never start or stop any medication without informing the trial coordinator first.
+        </p>
+      </section>
+
+      <section aria-labelledby="records">
+        <h2 id="records">Keeping records and communicating with the team</h2>
+        <p>
+          Organization makes everything smoother. Consider creating a simple system to track:
+        </p>
+        <ul>
+          <li><strong>Appointment schedule:</strong> Dates, times, locations, and any preparation required such as fasting or stopping certain medications.</li>
+          <li><strong>Medication log:</strong> What was taken, what time, and any missed doses.</li>
+          <li><strong>Symptom diary:</strong> Daily notes on how the participant feels, any side effects, and changes from baseline.</li>
+          <li><strong>Questions for the team:</strong> Write these down between appointments so nothing is forgotten during the visit.</li>
+          <li><strong>Key contacts:</strong> Trial coordinator, principal investigator emergency line, participant's primary care doctor.</li>
+        </ul>
+        <p>
+          A notebook, spreadsheet, or phone notes app all work. The format matters less than consistency. When speaking with the research team, being able to reference specific dates and details makes your communication far more useful.
+        </p>
+      </section>
+
+      <section aria-labelledby="emotional">
+        <h2 id="emotional">Emotional support — it is OK to feel overwhelmed</h2>
+        <p>
+          Caregiving during a clinical trial brings a unique set of emotions. You may feel hope that the treatment will work, fear that it will not, guilt for feeling burdened, frustration with the logistics, and exhaustion from holding it all together. These feelings are normal and valid.
+        </p>
+        <p>
+          The uncertainty of a trial can be harder to manage than a straightforward treatment plan. You may not know whether the participant is receiving the actual treatment or a placebo. Results may take months to become clear. Living in this ambiguity requires emotional resilience, and resilience needs support.
+        </p>
+        <p>
+          Talk to someone. Whether it is a friend, a therapist, a support group, or an online community, sharing your experience with people who understand can make a significant difference. You do not need to be strong every moment of every day.
+        </p>
+      </section>
+
+      <section aria-labelledby="resources">
+        <h2 id="resources">Support resources for caregivers</h2>
+        <p>
+          You are not the first person to navigate this, and you do not have to do it alone:
+        </p>
+        <ul>
+          <li><strong>The research team:</strong> Your first resource. They have worked with many caregivers and can answer questions about logistics, side effects, and what to expect next.</li>
+          <li><strong>Hospital social workers:</strong> Many clinical trial sites have social workers who can help with practical issues like transportation, insurance questions, lodging for out-of-town visits, and financial assistance programs.</li>
+          <li><strong>Caregiver support organizations:</strong> The Family Caregiver Alliance, the National Alliance for Caregiving, and disease-specific organizations offer information, support groups, and practical tools.</li>
+          <li><strong>Online communities:</strong> Forums and social media groups for specific conditions often include caregivers who are going through or have been through clinical trial participation.</li>
+          <li><strong>Your own doctor:</strong> Caregiver burnout is real. If you are not sleeping, are losing weight, or feel persistently overwhelmed, talk to your own healthcare provider.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="next-steps">
+        <h2 id="next-steps">Next steps</h2>
+        <p>
+          Supporting someone through a clinical trial is an act of genuine care. Being informed makes you a better advocate, and taking care of yourself makes you a more resilient one.
+        </p>
+        <p>
+          If you are helping someone decide whether to join a trial, review our <a href="/guides/questions-to-ask-your-doctor/">questions to ask the doctor</a> together. Understanding the <a href="/guides/how-to-join-a-clinical-trial/">enrollment process</a> step by step can also reduce anxiety about the unknown. And if you have questions that are not covered here, check our <a href="/faq/">FAQ page</a> for quick answers.
+        </p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

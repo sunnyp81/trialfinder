@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#FEFCF7"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#2A7D4F"/>
+
+  <!-- Cross/search icon -->
+  <circle cx="600" cy="240" r="60" fill="none" stroke="#2A7D4F" stroke-width="6"/>
+  <line x1="600" y1="200" x2="600" y2="280" stroke="#2A7D4F" stroke-width="6" stroke-linecap="round"/>
+  <line x1="560" y1="240" x2="640" y2="240" stroke="#2A7D4F" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="600" cy="240" r="12" fill="#C4501A"/>
+  <line x1="642" y1="282" x2="680" y2="320" stroke="#1C2B3A" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Title -->
+  <text x="600" y="400" text-anchor="middle" font-family="Georgia, serif" font-size="64" font-weight="700" fill="#1C2B3A">TrialFinder</text>
+
+  <!-- Tagline -->
+  <text x="600" y="460" text-anchor="middle" font-family="system-ui, sans-serif" font-size="28" fill="#4A5568">Clinical trials, in plain English.</text>
+
+  <!-- URL -->
+  <text x="600" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" fill="#718096">trialfinder.co</text>
+</svg>

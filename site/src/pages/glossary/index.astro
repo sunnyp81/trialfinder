@@ -1,0 +1,304 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { siteConfig } from '@/lib/site-config';
+import { buildBreadcrumbSchema } from '@/lib/schema';
+
+interface GlossaryEntry {
+  term: string;
+  slug: string;
+  shortDef: string;
+  category: string;
+}
+
+const categoryLabels: Record<string, string> = {
+  'trial-design': 'Trial Design',
+  'eligibility': 'Eligibility',
+  'medical': 'Medical',
+  'regulatory': 'Regulatory',
+  'statistics': 'Statistics',
+};
+
+const categoryColors: Record<string, string> = {
+  'trial-design': 'var(--color-accent)',
+  'eligibility': '#2a9d8f',
+  'medical': '#e76f51',
+  'regulatory': '#457b9d',
+  'statistics': '#6c5ce7',
+};
+
+const allTerms: GlossaryEntry[] = [
+  // Trial Design
+  { term: 'Adaptive Design', slug: 'adaptive-design', shortDef: 'A trial that can be modified while it is running, based on pre-planned rules and interim results.', category: 'trial-design' },
+  { term: 'Cohort', slug: 'cohort', shortDef: 'A group of participants who share a common characteristic and are studied together.', category: 'trial-design' },
+  { term: 'Compassionate Use', slug: 'compassionate-use', shortDef: 'Access to an experimental treatment for seriously ill patients with no other options.', category: 'trial-design' },
+  { term: 'Control Group', slug: 'control-group', shortDef: 'The group that does not receive the new treatment, providing a baseline for comparison.', category: 'trial-design' },
+  { term: 'Crossover', slug: 'crossover', shortDef: 'A trial where participants receive one treatment and then switch to the other.', category: 'trial-design' },
+  { term: 'Dose Escalation', slug: 'dose-escalation', shortDef: 'A study where the dose is gradually increased to find the right amount.', category: 'trial-design' },
+  { term: 'Double-Blind', slug: 'double-blind', shortDef: 'Neither the participant nor the doctor knows which treatment is being given.', category: 'trial-design' },
+  { term: 'Expanded Access', slug: 'expanded-access', shortDef: 'A pathway to use an unapproved drug outside of a clinical trial for serious conditions.', category: 'trial-design' },
+  { term: 'Interventional Study', slug: 'interventional-study', shortDef: 'A study where participants receive a specific treatment and researchers measure the results.', category: 'trial-design' },
+  { term: 'Multicenter', slug: 'multicenter', shortDef: 'A trial that runs at multiple hospitals or clinics across different locations.', category: 'trial-design' },
+  { term: 'Observational Study', slug: 'observational-study', shortDef: 'A study that watches participants without changing their treatment.', category: 'trial-design' },
+  { term: 'Open-Label', slug: 'open-label', shortDef: 'Everyone knows which treatment each participant is receiving.', category: 'trial-design' },
+  { term: 'Parallel Group', slug: 'parallel-group', shortDef: 'A trial where groups receive different treatments simultaneously without switching.', category: 'trial-design' },
+  { term: 'Placebo', slug: 'placebo', shortDef: 'An inactive treatment that looks identical to the real drug, used for comparison.', category: 'trial-design' },
+  { term: 'Placebo-Controlled', slug: 'placebo-controlled', shortDef: 'A trial that compares the new treatment against an inactive placebo.', category: 'trial-design' },
+  { term: 'Randomized', slug: 'randomized', shortDef: 'A computer randomly assigns participants to treatment groups, like flipping a coin.', category: 'trial-design' },
+  { term: 'Registry', slug: 'registry', shortDef: 'A long-term study collecting health data from people with a specific condition.', category: 'trial-design' },
+  { term: 'Single-Blind', slug: 'single-blind', shortDef: 'The participant does not know which treatment they are receiving, but the doctor does.', category: 'trial-design' },
+  { term: 'Single-Center', slug: 'single-center', shortDef: 'A trial that takes place at just one hospital or clinic.', category: 'trial-design' },
+  { term: 'Standard of Care', slug: 'standard-of-care', shortDef: 'The currently accepted, best-available treatment for a condition.', category: 'trial-design' },
+  { term: 'Treatment Arm', slug: 'treatment-arm', shortDef: 'One of the groups in a trial, each receiving a different treatment or dose.', category: 'trial-design' },
+
+  // Eligibility
+  { term: 'Assent', slug: 'assent', shortDef: 'Agreement from a child or young teenager to participate in a trial.', category: 'eligibility' },
+  { term: 'Baseline', slug: 'baseline', shortDef: 'Measurements taken at the start of a trial, before treatment begins.', category: 'eligibility' },
+  { term: 'Biomarker', slug: 'biomarker', shortDef: 'A measurable substance in your body that helps determine treatment decisions.', category: 'eligibility' },
+  { term: 'Comorbidity', slug: 'comorbidity', shortDef: 'A medical condition you have in addition to the one being studied.', category: 'eligibility' },
+  { term: 'Contraindication', slug: 'contraindication', shortDef: 'A reason why a particular treatment should not be given to you.', category: 'eligibility' },
+  { term: 'ECOG Score', slug: 'ecog-score', shortDef: 'A 0-to-5 scale measuring your ability to function in daily life.', category: 'eligibility' },
+  { term: 'Eligible', slug: 'eligible', shortDef: 'You meet all the requirements to join a specific trial.', category: 'eligibility' },
+  { term: 'Enrolled', slug: 'enrolled', shortDef: 'You have passed screening and are officially a participant in the trial.', category: 'eligibility' },
+  { term: 'Exclusion Criteria', slug: 'exclusion-criteria', shortDef: 'Conditions that prevent you from joining a trial, designed to protect your safety.', category: 'eligibility' },
+  { term: 'Genetic Testing', slug: 'genetic-testing', shortDef: 'Analysing your DNA to identify gene mutations relevant to treatment.', category: 'eligibility' },
+  { term: 'Healthy Volunteer', slug: 'healthy-volunteer', shortDef: 'A person without any illness who participates in a trial to test drug safety.', category: 'eligibility' },
+  { term: 'Inclusion Criteria', slug: 'inclusion-criteria', shortDef: 'Requirements you must meet to join a trial.', category: 'eligibility' },
+  { term: 'Ineligible', slug: 'ineligible', shortDef: 'You do not meet one or more requirements for a specific trial.', category: 'eligibility' },
+  { term: 'Informed Consent', slug: 'informed-consent', shortDef: 'The process of learning about a trial before agreeing to participate.', category: 'eligibility' },
+  { term: 'Performance Status', slug: 'performance-status', shortDef: 'A score measuring how well you can carry out daily activities.', category: 'eligibility' },
+  { term: 'Prior Therapy', slug: 'prior-therapy', shortDef: 'Treatments you have already received before joining a trial.', category: 'eligibility' },
+  { term: 'Randomization', slug: 'randomization', shortDef: 'The process of randomly assigning participants to different treatment groups.', category: 'eligibility' },
+  { term: 'Screening', slug: 'screening', shortDef: 'Medical tests to check whether you meet a trial\'s eligibility criteria.', category: 'eligibility' },
+  { term: 'Stratification', slug: 'stratification', shortDef: 'Balancing key patient characteristics across treatment groups during randomization.', category: 'eligibility' },
+  { term: 'Washout Period', slug: 'washout-period', shortDef: 'Time when you must stop certain medications before a trial begins.', category: 'eligibility' },
+
+  // Medical
+  { term: 'Adjuvant Therapy', slug: 'adjuvant-therapy', shortDef: 'Additional treatment given after surgery to reduce the chance of disease returning.', category: 'medical' },
+  { term: 'Adverse Event', slug: 'adverse-event', shortDef: 'Any unwanted medical problem that happens during a clinical trial.', category: 'medical' },
+  { term: 'Bioavailability', slug: 'bioavailability', shortDef: 'How much of a drug actually reaches your bloodstream and is available to work.', category: 'medical' },
+  { term: 'Chemotherapy', slug: 'chemotherapy', shortDef: 'Powerful drugs that kill rapidly dividing cells, including cancer cells.', category: 'medical' },
+  { term: 'Combination Therapy', slug: 'combination-therapy', shortDef: 'Using two or more treatments together to attack disease from multiple angles.', category: 'medical' },
+  { term: 'Complete Response', slug: 'complete-response', shortDef: 'All detectable signs of disease have disappeared after treatment.', category: 'medical' },
+  { term: 'Dose-Limiting Toxicity', slug: 'dose-limiting-toxicity', shortDef: 'A side effect severe enough to prevent the dose from being increased further.', category: 'medical' },
+  { term: 'Half-Life', slug: 'half-life', shortDef: 'The time it takes for the amount of drug in your body to decrease by half.', category: 'medical' },
+  { term: 'Immunotherapy', slug: 'immunotherapy', shortDef: 'Treatment that helps your immune system recognise and fight disease.', category: 'medical' },
+  { term: 'Maintenance Therapy', slug: 'maintenance-therapy', shortDef: 'Ongoing treatment to keep disease from returning after initial therapy worked.', category: 'medical' },
+  { term: 'Maximum Tolerated Dose', slug: 'maximum-tolerated-dose', shortDef: 'The highest dose of a drug that does not cause unacceptable side effects.', category: 'medical' },
+  { term: 'Monoclonal Antibody', slug: 'monoclonal-antibody', shortDef: 'A lab-made protein designed to attach to a specific target on cells.', category: 'medical' },
+  { term: 'Neoadjuvant Therapy', slug: 'neoadjuvant-therapy', shortDef: 'Treatment given before surgery to shrink a tumour.', category: 'medical' },
+  { term: 'Overall Survival', slug: 'overall-survival', shortDef: 'How long participants live after starting treatment, the most meaningful cancer endpoint.', category: 'medical' },
+  { term: 'Palliative Care', slug: 'palliative-care', shortDef: 'Care focused on relieving symptoms and improving quality of life.', category: 'medical' },
+  { term: 'Partial Response', slug: 'partial-response', shortDef: 'The disease has shrunk significantly but not completely disappeared.', category: 'medical' },
+  { term: 'Pharmacodynamics', slug: 'pharmacodynamics', shortDef: 'The study of what a drug does to your body.', category: 'medical' },
+  { term: 'Pharmacokinetics', slug: 'pharmacokinetics', shortDef: 'The study of how your body absorbs, distributes, and eliminates a drug.', category: 'medical' },
+  { term: 'Progression', slug: 'progression', shortDef: 'Your disease is getting worse — a tumour is growing or spreading.', category: 'medical' },
+  { term: 'Progression-Free Survival', slug: 'progression-free-survival', shortDef: 'How long you live without your disease getting worse.', category: 'medical' },
+  { term: 'Remission', slug: 'remission', shortDef: 'Signs and symptoms of disease have partially or completely disappeared.', category: 'medical' },
+  { term: 'Response Rate', slug: 'response-rate', shortDef: 'The percentage of participants whose disease shrank meaningfully during treatment.', category: 'medical' },
+  { term: 'Serious Adverse Event', slug: 'serious-adverse-event', shortDef: 'A medical event during a trial that is life-threatening or requires hospitalisation.', category: 'medical' },
+  { term: 'Stable Disease', slug: 'stable-disease', shortDef: 'Your condition is neither getting better nor getting worse.', category: 'medical' },
+  { term: 'Targeted Therapy', slug: 'targeted-therapy', shortDef: 'Drugs designed to attack specific molecules that cancer cells depend on.', category: 'medical' },
+
+  // Regulatory
+  { term: 'Breakthrough Therapy', slug: 'breakthrough-therapy', shortDef: 'An FDA designation for drugs showing substantial improvement over existing treatments.', category: 'regulatory' },
+  { term: 'Clinical Research Organization', slug: 'clinical-research-organization', shortDef: 'A company hired to help run clinical trials on behalf of the sponsor.', category: 'regulatory' },
+  { term: 'Data Safety Monitoring Board', slug: 'data-safety-monitoring-board', shortDef: 'An independent group that reviews trial data to protect participant safety.', category: 'regulatory' },
+  { term: 'EMA', slug: 'ema', shortDef: 'The European Medicines Agency — the EU equivalent of the FDA.', category: 'regulatory' },
+  { term: 'Emergency Use Authorization', slug: 'emergency-use-authorization', shortDef: 'FDA mechanism allowing unapproved treatments during public health emergencies.', category: 'regulatory' },
+  { term: 'Fast Track', slug: 'fast-track', shortDef: 'An FDA designation speeding up review for drugs treating serious conditions.', category: 'regulatory' },
+  { term: 'FDA', slug: 'fda', shortDef: 'The US Food and Drug Administration — the agency that approves new drugs.', category: 'regulatory' },
+  { term: 'Good Clinical Practice', slug: 'good-clinical-practice', shortDef: 'International ethical and quality standards for conducting clinical trials.', category: 'regulatory' },
+  { term: 'IND', slug: 'ind', shortDef: 'Investigational New Drug application — the FDA filing required before human testing.', category: 'regulatory' },
+  { term: 'Institutional Review Board', slug: 'institutional-review-board', shortDef: 'The ethics committee that oversees clinical research at hospitals and universities.', category: 'regulatory' },
+  { term: 'Investigational Drug', slug: 'investigational-drug', shortDef: 'A drug being tested in clinical trials that has not yet been approved.', category: 'regulatory' },
+  { term: 'IRB', slug: 'irb', shortDef: 'Institutional Review Board — the independent committee that approves trial plans.', category: 'regulatory' },
+  { term: 'NDA', slug: 'nda', shortDef: 'New Drug Application — the formal submission requesting FDA approval to sell a drug.', category: 'regulatory' },
+  { term: 'Orphan Drug', slug: 'orphan-drug', shortDef: 'A medication developed to treat a rare disease affecting fewer than 200,000 people.', category: 'regulatory' },
+  { term: 'Principal Investigator', slug: 'principal-investigator', shortDef: 'The lead doctor responsible for the trial at a specific hospital or clinic.', category: 'regulatory' },
+  { term: 'Regulatory Approval', slug: 'regulatory-approval', shortDef: 'Official authorization from the FDA or EMA allowing a drug to be sold to the public.', category: 'regulatory' },
+  { term: 'Sponsor', slug: 'sponsor', shortDef: 'The organisation that funds and oversees a clinical trial.', category: 'regulatory' },
+
+  // Statistics
+  { term: 'Confidence Interval', slug: 'confidence-interval', shortDef: 'A range of values that likely contains the true treatment effect.', category: 'statistics' },
+  { term: 'Endpoint', slug: 'endpoint', shortDef: 'The specific outcome a clinical trial is designed to measure.', category: 'statistics' },
+  { term: 'Hazard Ratio', slug: 'hazard-ratio', shortDef: 'A number comparing the rate of an event between two treatment groups.', category: 'statistics' },
+  { term: 'Intent-to-Treat', slug: 'intent-to-treat', shortDef: 'Analysis including every randomised participant, regardless of whether they completed treatment.', category: 'statistics' },
+  { term: 'Interim Analysis', slug: 'interim-analysis', shortDef: 'A planned review of trial data before the study is complete.', category: 'statistics' },
+  { term: 'P-Value', slug: 'p-value', shortDef: 'A number showing how likely it is that trial results happened by chance.', category: 'statistics' },
+  { term: 'Per-Protocol', slug: 'per-protocol', shortDef: 'Analysis including only participants who completed the trial exactly as planned.', category: 'statistics' },
+  { term: 'Power', slug: 'power', shortDef: 'The probability that a trial will detect a treatment effect if one truly exists.', category: 'statistics' },
+  { term: 'Primary Endpoint', slug: 'primary-endpoint', shortDef: 'The main outcome measure the trial is designed to evaluate.', category: 'statistics' },
+  { term: 'Sample Size', slug: 'sample-size', shortDef: 'The number of participants needed to detect a meaningful treatment effect.', category: 'statistics' },
+  { term: 'Secondary Endpoint', slug: 'secondary-endpoint', shortDef: 'Additional outcomes measured alongside the primary endpoint.', category: 'statistics' },
+  { term: 'Statistical Significance', slug: 'statistical-significance', shortDef: 'Results that are unlikely to have occurred by chance alone.', category: 'statistics' },
+  { term: 'Surrogate Endpoint', slug: 'surrogate-endpoint', shortDef: 'A stand-in measurement used when the real outcome takes too long to measure.', category: 'statistics' },
+];
+
+// Sort alphabetically
+allTerms.sort((a, b) => a.term.localeCompare(b.term));
+
+// Group by first letter
+const grouped = new Map<string, GlossaryEntry[]>();
+for (const t of allTerms) {
+  const letter = t.term[0].toUpperCase();
+  if (!grouped.has(letter)) grouped.set(letter, []);
+  grouped.get(letter)!.push(t);
+}
+
+const letters = Array.from(grouped.keys()).sort();
+const allLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+const schemas = [
+  buildBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Glossary', url: `${siteConfig.url}/glossary/` },
+  ]),
+];
+---
+
+<BaseLayout
+  title="Clinical Trial Glossary — Terms Explained in Plain English"
+  description="100+ clinical trial terms explained in plain English. Understand eligibility criteria, trial phases, medical procedures, and more."
+  schema={schemas}
+>
+  <div class="container section-sm">
+    <Breadcrumb items={[
+      { label: 'Glossary' },
+    ]} />
+
+    <article>
+      <header class="mb-8">
+        <h1 class="mb-3">Clinical Trial Glossary — Medical Terms in Plain English</h1>
+        <p class="prose">
+          Clinical trials use specialised medical language. This glossary explains every term
+          in plain English so you can understand eligibility criteria, trial designs, and
+          medical procedures.
+        </p>
+      </header>
+
+      <!-- Category legend -->
+      <div class="mb-6 flex flex-wrap gap-2">
+        {Object.entries(categoryLabels).map(([key, label]) => (
+          <span class="pill" style={`background: ${categoryColors[key]}22; color: ${categoryColors[key]}; border: 1px solid ${categoryColors[key]}44; font-size: 0.8rem;`}>
+            {label}
+          </span>
+        ))}
+      </div>
+
+      <!-- Alphabet jump links -->
+      <nav aria-label="Jump to letter" class="alphabet-nav mb-10">
+        {allLetters.map(letter => (
+          letters.includes(letter) ? (
+            <a href={`#letter-${letter}`} class="alpha-link">{letter}</a>
+          ) : (
+            <span class="alpha-link alpha-disabled">{letter}</span>
+          )
+        ))}
+      </nav>
+
+      <!-- Term listings by letter -->
+      {letters.map(letter => (
+        <section id={`letter-${letter}`} class="mb-10">
+          <h2 class="letter-heading">{letter}</h2>
+          <div class="term-list">
+            {grouped.get(letter)!.map(entry => (
+              <div class="term-item">
+                <div class="term-header">
+                  <a href={`/glossary/${entry.slug}/`} class="term-link">
+                    {entry.term}
+                  </a>
+                  <span class="pill pill-sm" style={`background: ${categoryColors[entry.category]}22; color: ${categoryColors[entry.category]}; border: 1px solid ${categoryColors[entry.category]}44;`}>
+                    {categoryLabels[entry.category]}
+                  </span>
+                </div>
+                <p class="term-def">{entry.shortDef}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <!-- Count -->
+      <p class="text-sm" style="color: var(--color-text-light); text-align: center; margin-top: 2rem;">
+        {allTerms.length} terms defined &middot; Written for patients and caregivers
+      </p>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .alphabet-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    justify-content: center;
+  }
+  .alpha-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: var(--color-accent);
+    background: var(--color-bg-alt);
+    transition: background 0.15s, color 0.15s;
+  }
+  .alpha-link:hover {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .alpha-disabled {
+    color: var(--color-text-light);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .letter-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    border-bottom: 2px solid var(--color-accent);
+    padding-bottom: 0.35rem;
+    margin-bottom: 1rem;
+  }
+  .term-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .term-item {
+    padding: 1rem 1.25rem;
+    background: var(--color-bg-alt);
+    border-radius: var(--radius-md);
+  }
+  .term-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.35rem;
+  }
+  .term-link {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+  .term-link:hover {
+    color: var(--color-accent);
+  }
+  .term-def {
+    color: var(--color-text-muted);
+    font-size: 0.925rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .pill-sm {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+  }
+</style>

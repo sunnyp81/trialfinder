@@ -1,0 +1,10 @@
+[
+  {"name": "Breast Cancer", "slug": "breast-cancer", "trialCount": 1},
+  {"name": "Type 2 Diabetes", "slug": "type-2-diabetes", "trialCount": 1},
+  {"name": "Lung Cancer", "slug": "lung-cancer", "trialCount": 0},
+  {"name": "Heart Failure", "slug": "heart-failure", "trialCount": 0},
+  {"name": "Alzheimer's Disease", "slug": "alzheimers-disease", "trialCount": 0},
+  {"name": "Depression", "slug": "depression", "trialCount": 0},
+  {"name": "HIV", "slug": "hiv", "trialCount": 0},
+  {"name": "Rheumatoid Arthritis", "slug": "rheumatoid-arthritis", "trialCount": 0}
+]

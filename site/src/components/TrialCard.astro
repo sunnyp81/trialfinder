@@ -1,0 +1,70 @@
+---
+import { formatPhase, formatStatus, ageDisplay, sexDisplay } from '@/lib/site-config';
+
+interface Props {
+  trial: {
+    nctId: string;
+    briefTitle: string;
+    status: string;
+    phase: string;
+    plainSummary: string;
+    locationCount: number;
+    minAge: string;
+    maxAge: string;
+    sex: string;
+    slug: string;
+  };
+}
+
+const { trial } = Astro.props;
+const { label: statusLabel, class: statusClass } = formatStatus(trial.status);
+const phase = formatPhase(trial.phase);
+const age = ageDisplay(trial.minAge, trial.maxAge);
+const sex = sexDisplay(trial.sex);
+
+// First sentence of plain summary
+const firstSentence = trial.plainSummary
+  ? trial.plainSummary.split(/(?<=[.!?])\s+/)[0]
+  : '';
+---
+
+<article class="card">
+  <div class="flex flex-wrap items-center gap-2 mb-3">
+    <span class={`badge ${statusClass}`}>{statusLabel}</span>
+    {phase !== 'N/A' && <span class="pill">{phase}</span>}
+  </div>
+
+  <h3 class="text-lg mb-2" style="line-height: 1.35;">
+    <a href={`/trial/${trial.slug}/`} style="color: var(--color-text); text-decoration: none;">
+      {trial.briefTitle}
+    </a>
+  </h3>
+
+  {firstSentence && (
+    <p class="text-sm mb-3" style="color: var(--color-text-muted); line-height: 1.6;">
+      {firstSentence}
+    </p>
+  )}
+
+  <dl class="trial-meta text-sm">
+    <div class="flex gap-1.5">
+      <dt>Locations</dt>
+      <dd>{trial.locationCount} US site{trial.locationCount !== 1 ? 's' : ''}</dd>
+    </div>
+    <div class="flex gap-1.5">
+      <dt>Open to</dt>
+      <dd>{age}, {sex}</dd>
+    </div>
+  </dl>
+
+  <a
+    href={`/trial/${trial.slug}/`}
+    class="btn-secondary mt-4 text-sm"
+  >
+    See if I qualify &rarr;
+  </a>
+</article>
+
+<style>
+  article h3 a:hover { color: var(--color-accent) !important; }
+</style>

@@ -1,0 +1,168 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { buildArticleSchema, buildBreadcrumbSchema } from '@/lib/schema';
+import { siteConfig } from '@/lib/site-config';
+
+const title = "What Are Clinical Trial Phases? Phase 1 Through Phase 4 Explained";
+const description = "Clinical trial phases explained in plain English. Learn what Phase 1, 2, 3, and 4 mean, how many people are involved, and how long each phase typically takes.";
+const url = `${siteConfig.url}/guides/what-are-trial-phases/`;
+
+const breadcrumbItems = [
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Trial Phases Explained' },
+];
+
+const schema = [
+  buildArticleSchema({
+    title,
+    description,
+    url,
+    datePublished: '2026-03-26',
+    dateModified: '2026-03-26',
+  }),
+  buildBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Guides', url: `${siteConfig.url}/guides/` },
+    { name: 'Trial Phases Explained', url },
+  ]),
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema} type="article">
+  <article class="container-narrow section-sm">
+    <Breadcrumb items={breadcrumbItems} />
+
+    <h1>{title}</h1>
+    <p style="color: var(--color-text-muted);">Last updated: March 2026 &middot; 7 min read</p>
+
+    <div class="prose">
+      <p>
+        When you look at a clinical trial listing, one of the first things you will notice is its phase. Phase 1, Phase 2, Phase 3, Phase 4: these labels tell you how far along the research is, how many people are typically involved, and what the study is designed to learn. Understanding phases helps you set realistic expectations about what participating in a trial will involve.
+      </p>
+
+      <section aria-labelledby="overview">
+        <h2 id="overview">The drug development pipeline</h2>
+        <p>
+          Before a new treatment reaches patients, it goes through years of development. It starts in a laboratory, where scientists study the compound in cells and animal models. This preclinical stage can take three to six years. Only treatments that show real promise move on to testing in humans, and that testing follows a structured sequence of phases.
+        </p>
+        <p>
+          Each phase builds on the findings of the previous one. A treatment must succeed in one phase before advancing to the next. According to the
+          <a href="https://www.fda.gov/patients/drug-development-process" target="_blank" rel="noopener noreferrer">FDA</a>,
+          the entire journey from laboratory to pharmacy shelf takes an average of 10 to 15 years. Clinical trial phases account for roughly six to eight of those years.
+        </p>
+      </section>
+
+      <section aria-labelledby="phase-1">
+        <h2 id="phase-1">Phase 1: is the treatment safe?</h2>
+        <p>
+          Phase 1 trials are the first time a new treatment is tested in people. The primary goal is safety. Researchers want to answer: What happens when a human body encounters this compound? What dose is safe? What side effects occur?
+        </p>
+
+        <h3 id="phase-1-details">How Phase 1 works</h3>
+        <p>
+          These trials enroll a small number of participants, usually between 20 and 80 people. In many Phase 1 trials, participants are healthy volunteers who do not have the disease the treatment targets. However, cancer Phase 1 trials typically enroll patients who have already tried standard treatments without success.
+        </p>
+        <p>
+          Researchers start with a very low dose and gradually increase it, carefully monitoring each group for side effects. This process, called dose escalation, helps identify the maximum dose that people can tolerate without serious adverse effects.
+        </p>
+        <p>
+          Phase 1 trials typically last several months to a year. About 70 percent of treatments that enter Phase 1 advance to Phase 2.
+        </p>
+      </section>
+
+      <section aria-labelledby="phase-2">
+        <h2 id="phase-2">Phase 2: does the treatment work?</h2>
+        <p>
+          Phase 2 trials shift the focus from safety to effectiveness. The treatment has passed initial safety testing, and researchers now want to know: Does this treatment actually improve the condition it targets?
+        </p>
+
+        <h3 id="phase-2-details">How Phase 2 works</h3>
+        <p>
+          Phase 2 trials enroll more participants, typically 100 to 300 people, all of whom have the condition being studied. Participants receive the treatment at doses determined to be safe during Phase 1.
+        </p>
+        <p>
+          Researchers track specific outcomes, such as whether tumors shrink, blood sugar levels improve, or symptoms decrease. They also continue monitoring for side effects, since a larger group may reveal reactions that a smaller Phase 1 group did not.
+        </p>
+        <p>
+          Phase 2 is sometimes divided into Phase 2a (focused on dosing) and Phase 2b (focused on effectiveness). These trials usually last one to two years. Roughly 33 percent of treatments move from Phase 2 to Phase 3, making this the phase where most experimental treatments are discontinued.
+        </p>
+      </section>
+
+      <section aria-labelledby="phase-3">
+        <h2 id="phase-3">Phase 3: is the treatment better than what exists?</h2>
+        <p>
+          Phase 3 trials are the large-scale studies that determine whether a new treatment should be approved for widespread use. They compare the new treatment directly against the current standard of care, or against a placebo when no standard treatment exists.
+        </p>
+
+        <h3 id="phase-3-details">How Phase 3 works</h3>
+        <p>
+          These trials involve hundreds to thousands of participants across multiple hospitals and clinics, often in different countries. The large group size helps researchers detect benefits and side effects that might not appear in smaller studies.
+        </p>
+        <p>
+          Participants are typically randomized into groups. Neither the patient nor the doctor may know which group is receiving the new treatment, a design called "double-blind" that prevents bias from influencing results.
+        </p>
+        <p>
+          Phase 3 trials usually last one to four years. If the treatment proves safe and more effective than existing options, the sponsor submits the results to regulatory agencies like the
+          <a href="https://www.fda.gov/" target="_blank" rel="noopener noreferrer">FDA</a>
+          in the United States or the EMA in Europe. About 25 to 30 percent of treatments that enter Phase 3 ultimately win approval.
+        </p>
+      </section>
+
+      <section aria-labelledby="phase-4">
+        <h2 id="phase-4">Phase 4: monitoring after approval</h2>
+        <p>
+          Phase 4 trials take place after a treatment has already been approved and is available to the public. They are sometimes called post-marketing surveillance studies.
+        </p>
+
+        <h3 id="phase-4-details">Why Phase 4 matters</h3>
+        <p>
+          Even after approval, there is more to learn. Phase 4 trials monitor long-term safety across much larger and more diverse populations than earlier phases could include. They may uncover rare side effects that only appear after thousands of people take the drug over several years.
+        </p>
+        <p>
+          Phase 4 studies can also explore new uses for an already-approved treatment, test it in populations that were not included in earlier trials (such as children, elderly patients, or people with other medical conditions), and compare it to newer alternatives that have entered the market.
+        </p>
+        <p>
+          These trials can last for many years. Participation in a Phase 4 trial means you are taking an approved treatment, so the risk profile is generally well understood.
+        </p>
+      </section>
+
+      <section aria-labelledby="timeline">
+        <h2 id="timeline">How long does each phase take?</h2>
+        <p>
+          Timelines vary depending on the condition, the treatment, and how quickly participants can be enrolled. Here is a general guide based on data from the
+          <a href="https://www.nih.gov/" target="_blank" rel="noopener noreferrer">National Institutes of Health</a>:
+        </p>
+        <ul>
+          <li><strong>Phase 1:</strong> Several months to 1 year. 20&ndash;80 participants.</li>
+          <li><strong>Phase 2:</strong> 1 to 2 years. 100&ndash;300 participants.</li>
+          <li><strong>Phase 3:</strong> 1 to 4 years. 300&ndash;3,000+ participants.</li>
+          <li><strong>Phase 4:</strong> Ongoing after approval. Thousands of participants over many years.</li>
+        </ul>
+        <p>
+          Regulatory review after Phase 3, where the FDA or EMA evaluates the data and decides whether to approve the treatment, adds another 6 to 18 months.
+        </p>
+      </section>
+
+      <section aria-labelledby="which-phase">
+        <h2 id="which-phase">Which phase is right for you?</h2>
+        <p>
+          There is no single answer. Phase 1 trials carry more uncertainty because the treatment is new, but they may offer access to cutting-edge therapies when standard options have not worked. Phase 3 trials involve treatments that have already shown promise and provide the structure of a large, well-monitored study. Phase 4 trials offer the lowest uncertainty since the treatment is already approved.
+        </p>
+        <p>
+          The right choice depends on your condition, how you have responded to existing treatments, and your personal comfort with the level of unknowns involved. Your doctor can help you weigh these factors.
+        </p>
+      </section>
+
+      <section aria-labelledby="next-steps">
+        <h2 id="next-steps">Next steps</h2>
+        <p>
+          For a broader introduction, start with our guide on <a href="/guides/what-is-a-clinical-trial/">what a clinical trial is</a>. If you are ready to take action, our step-by-step guide on <a href="/guides/how-to-join-a-clinical-trial/">how to join a clinical trial</a> walks you through the process from search to enrollment.
+        </p>
+        <p>
+          On TrialFinder, every trial listing clearly shows its phase alongside a plain-English explanation of what that phase means. Browse by condition to find studies that match your situation.
+        </p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

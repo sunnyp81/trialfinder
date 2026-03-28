@@ -1,0 +1,187 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { buildArticleSchema, buildBreadcrumbSchema } from '@/lib/schema';
+import { siteConfig } from '@/lib/site-config';
+
+const title = "How to Join a Clinical Trial — Step by Step";
+const description = "A step-by-step guide to joining a clinical trial in plain English. Covers finding trials, screening, informed consent, what to expect, and your rights.";
+const url = `${siteConfig.url}/guides/how-to-join-a-clinical-trial/`;
+
+const breadcrumbItems = [
+  { label: 'Guides', href: '/guides/' },
+  { label: 'How to Join a Clinical Trial' },
+];
+
+const schema = [
+  buildArticleSchema({
+    title,
+    description,
+    url,
+    datePublished: '2026-03-26',
+    dateModified: '2026-03-26',
+  }),
+  buildBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Guides', url: `${siteConfig.url}/guides/` },
+    { name: 'How to Join a Clinical Trial', url },
+  ]),
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema} type="article">
+  <article class="container-narrow section-sm">
+    <Breadcrumb items={breadcrumbItems} />
+
+    <h1>{title}</h1>
+    <p style="color: var(--color-text-muted);">Last updated: March 2026 &middot; 8 min read</p>
+
+    <div class="prose">
+      <p>
+        Joining a clinical trial can feel overwhelming when you do not know what to expect. The process involves several steps, each designed to protect your safety and ensure the trial is right for you. This guide walks you through every stage, from finding a trial to completing your participation, so there are no surprises along the way.
+      </p>
+
+      <section aria-labelledby="step-1">
+        <h2 id="step-1">Step 1: Find trials that match your situation</h2>
+        <p>
+          The first step is identifying trials that are relevant to your condition, location, and treatment history. There are several ways to do this:
+        </p>
+        <ul>
+          <li><strong>Talk to your doctor.</strong> Your oncologist, specialist, or primary care physician may already know of trials that fit your profile. Doctors at academic medical centers often have direct connections to ongoing research.</li>
+          <li><strong>Search <a href="https://clinicaltrials.gov/" target="_blank" rel="noopener noreferrer">ClinicalTrials.gov</a>.</strong> This is the largest public registry of clinical trials worldwide, maintained by the <a href="https://www.nih.gov/" target="_blank" rel="noopener noreferrer">National Institutes of Health</a>. You can search by condition, location, and trial phase.</li>
+          <li><strong>Use TrialFinder.</strong> We pull data from ClinicalTrials.gov and translate the eligibility criteria into plain English, making it faster to see whether a trial might work for you.</li>
+          <li><strong>Contact patient advocacy organizations.</strong> Groups like the American Cancer Society, the Alzheimer's Association, and disease-specific foundations maintain their own trial databases and can help match you with studies.</li>
+        </ul>
+        <p>
+          When reviewing listings, pay attention to the trial's phase, location, status (is it currently recruiting?), and eligibility criteria. Our guide on <a href="/guides/how-to-read-eligibility-criteria/">reading eligibility criteria</a> can help you decode the medical language.
+        </p>
+      </section>
+
+      <section aria-labelledby="step-2">
+        <h2 id="step-2">Step 2: Make initial contact</h2>
+        <p>
+          Once you find a trial that interests you, reach out to the study team. Every trial listing includes contact information, typically a research coordinator's name, phone number, and email address.
+        </p>
+        <p>
+          During this first conversation, the coordinator will ask basic questions about your diagnosis, treatment history, and general health. This is a preliminary check, not a commitment. The coordinator is trying to determine whether it makes sense for you to come in for a formal screening visit.
+        </p>
+        <p>
+          Feel free to ask your own questions during this call. You might want to know where the trial site is located, how often visits are required, and whether travel expenses are covered. If anything about the trial does not work for you, it is perfectly fine to say so.
+        </p>
+      </section>
+
+      <section aria-labelledby="step-3">
+        <h2 id="step-3">Step 3: The screening visit</h2>
+        <p>
+          If the initial conversation goes well, you will be invited for a screening visit at the trial site. This is a thorough evaluation to confirm that you meet all the eligibility criteria.
+        </p>
+
+        <h3 id="screening-details">What happens during screening</h3>
+        <p>
+          Screening typically involves a physical examination, blood tests, imaging scans (such as CT, MRI, or X-ray), a review of your medical records, and a detailed discussion of your health history. The specific tests depend on the trial and the condition being studied.
+        </p>
+        <p>
+          Screening can take a single visit or multiple visits over one to two weeks. The trial sponsor usually covers the cost of screening tests, but confirm this with the coordinator beforehand.
+        </p>
+        <p>
+          Not everyone who screens will qualify. If your test results fall outside the required ranges, or if the research team identifies a safety concern, you may be told you are not eligible. This is not a reflection of your health in general. It simply means this particular trial is not the right match.
+        </p>
+      </section>
+
+      <section aria-labelledby="step-4">
+        <h2 id="step-4">Step 4: Informed consent</h2>
+        <p>
+          Before you officially enroll, you will go through the informed consent process. A member of the research team will sit down with you and walk through a detailed document that covers:
+        </p>
+        <ul>
+          <li>The purpose of the study and how it is designed</li>
+          <li>What treatment you will receive and how it is administered</li>
+          <li>Known risks and potential side effects</li>
+          <li>Potential benefits, including the possibility that there may be none</li>
+          <li>Alternative treatments available to you outside the trial</li>
+          <li>How your privacy and medical data will be protected</li>
+          <li>Your right to leave the trial at any time</li>
+        </ul>
+        <p>
+          Take your time with this step. Read every section carefully. Ask questions about anything that is unclear. Bring a family member or friend for support. You do not need to sign the form on the same day. A trustworthy research team will never rush you.
+        </p>
+        <p>
+          For a deeper understanding of what to ask during this stage, see our guide on <a href="/guides/questions-to-ask-your-doctor/">questions to ask your doctor about clinical trials</a>.
+        </p>
+      </section>
+
+      <section aria-labelledby="step-5">
+        <h2 id="step-5">Step 5: Enrollment and treatment begins</h2>
+        <p>
+          After you sign the consent form and pass screening, you are officially enrolled. The research team will explain your visit schedule, how the treatment will be given (pill, infusion, injection, etc.), and what monitoring will look like.
+        </p>
+
+        <h3 id="randomization">Randomization and blinding</h3>
+        <p>
+          If the trial is randomized, a computer will assign you to a treatment group. You might receive the new treatment, the current standard treatment, or in some cases a placebo. In a "blinded" trial, you and possibly your doctor will not know which group you are in. This design produces more reliable results.
+        </p>
+        <p>
+          Regardless of which group you are assigned to, you will receive medical care. Ethical standards require that no participant goes without treatment when an effective option exists.
+        </p>
+
+        <h3 id="first-visit">Your first treatment visit</h3>
+        <p>
+          The first visit is usually the longest. The team may run baseline tests, administer the first dose, and monitor you for any immediate reactions. Bring something to read or watch on your phone, water, and a snack. Ask in advance how long you should expect to be there.
+        </p>
+      </section>
+
+      <section aria-labelledby="step-6">
+        <h2 id="step-6">Step 6: What to expect during the trial</h2>
+        <p>
+          Throughout the trial, you will have regular check-in visits. These visits serve two purposes: monitoring your health and collecting data for the study.
+        </p>
+        <p>
+          At each visit, you can expect some combination of physical exams, blood draws, imaging scans, questionnaires about how you are feeling, and discussions with the research team about any symptoms or side effects. Keep a journal of how you feel between visits. This information helps the team spot patterns and adjust your care if needed.
+        </p>
+        <p>
+          Between visits, the research team is available by phone or email if you have concerns. If you experience an unexpected symptom, do not wait for your next scheduled visit. Contact the team immediately.
+        </p>
+        <p>
+          You are also expected to follow the trial protocol. This means taking the study medication as directed, showing up for scheduled visits, and reporting any changes in your health or other medications. Adherence to the protocol keeps you safe and ensures the trial data is accurate.
+        </p>
+      </section>
+
+      <section aria-labelledby="your-rights">
+        <h2 id="your-rights">Your rights as a participant</h2>
+        <p>
+          Clinical trial participants are protected by federal regulations and international ethical guidelines, including the <a href="https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html" target="_blank" rel="noopener noreferrer">Belmont Report</a> and the Declaration of Helsinki. Here are your core rights:
+        </p>
+        <ul>
+          <li><strong>Voluntary participation.</strong> No one can force you to join or stay in a trial. Your decision will not affect your regular medical care.</li>
+          <li><strong>Full information.</strong> You have the right to know everything about the trial before, during, and after your participation. If new risks are discovered, the team must tell you.</li>
+          <li><strong>Privacy.</strong> Your medical data is protected by law. Results are published in aggregate, never with your name or identifying details.</li>
+          <li><strong>Withdrawal at any time.</strong> You can leave the trial for any reason. The team may ask you to complete a final set of tests for safety purposes, but you are not obligated to continue treatment.</li>
+          <li><strong>Access to results.</strong> After the trial concludes, you have the right to learn about the findings. Ask the research team how and when results will be shared.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="after-trial">
+        <h2 id="after-trial">What happens when the trial ends</h2>
+        <p>
+          When the trial concludes, the research team will conduct a final set of evaluations. Depending on the trial, there may be a follow-up period lasting weeks or months where the team monitors your health after the treatment stops.
+        </p>
+        <p>
+          If the treatment worked well for you, ask the research team about continued access. Some sponsors offer "extended access" or "compassionate use" programs that let participants keep receiving the study treatment while it awaits regulatory approval.
+        </p>
+        <p>
+          Your regular doctor will receive a summary of your trial participation, ensuring continuity of care as you transition back to standard treatment.
+        </p>
+      </section>
+
+      <section aria-labelledby="next-steps">
+        <h2 id="next-steps">Next steps</h2>
+        <p>
+          If you are new to clinical trials, our guide on <a href="/guides/what-is-a-clinical-trial/">what a clinical trial is</a> provides essential background. Before your first appointment with a research team, review our list of <a href="/guides/questions-to-ask-your-doctor/">questions to ask your doctor</a> so you feel prepared and confident.
+        </p>
+        <p>
+          Browse trials by condition on TrialFinder. Every listing is translated into plain English, with eligibility criteria you can actually understand. When you find something that looks right, the contact information is right there. Take the first step today.
+        </p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

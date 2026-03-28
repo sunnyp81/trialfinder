@@ -1,0 +1,57 @@
+name: Update Trial Data & Deploy
+
+on:
+  schedule:
+    # Every Monday and Thursday at 6am UTC
+    - cron: '0 6 * * 1,4'
+  workflow_dispatch: # Manual trigger button in GitHub UI
+
+jobs:
+  update-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: pip install requests
+
+      - name: Restore cached database
+        uses: actions/cache@v4
+        with:
+          path: scripts/data/trials.db
+          key: trials-db-${{ github.run_number }}
+          restore-keys: trials-db-
+
+      - name: Fetch trials from ClinicalTrials.gov
+        run: python scripts/fetch_trials.py
+
+      - name: Build condition taxonomy
+        run: python scripts/build_conditions.py
+
+      - name: Export JSON for site
+        run: python scripts/export_json.py
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install site dependencies
+        run: cd site && npm ci
+
+      - name: Build Astro site
+        run: cd site && npm run build
+
+      - name: Deploy to Cloudflare Pages
+        run: cd site && npx wrangler pages deploy dist --project-name trialfinder
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

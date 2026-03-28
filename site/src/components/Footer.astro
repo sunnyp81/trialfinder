@@ -1,0 +1,70 @@
+---
+import { siteConfig } from '@/lib/site-config';
+const year = new Date().getFullYear();
+---
+
+<footer class="section-sm" style="background: var(--color-bg-alt); border-top: 1px solid var(--color-border);">
+  <div class="container">
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+      <div class="col-span-2 md:col-span-1">
+        <p class="text-lg font-bold mb-1" style="font-family: var(--font-display);">
+          {siteConfig.name}
+        </p>
+        <p class="text-sm" style="color: var(--color-text-muted); max-width: 300px;">
+          Clinical trial eligibility in plain English.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-bold mb-3 uppercase tracking-wide" style="color: var(--color-text-muted); font-family: var(--font-body);">
+          Patient Guides
+        </h3>
+        <ul class="space-y-1.5 text-sm" style="list-style: none; padding: 0;">
+          <li><a href="/guides/" style="color: var(--color-text-muted); text-decoration: none;">All Guides</a></li>
+          <li><a href="/guides/what-is-a-clinical-trial/" style="color: var(--color-text-muted); text-decoration: none;">What Is a Trial?</a></li>
+          <li><a href="/guides/how-to-join-a-clinical-trial/" style="color: var(--color-text-muted); text-decoration: none;">How to Join</a></li>
+          <li><a href="/guides/what-are-trial-phases/" style="color: var(--color-text-muted); text-decoration: none;">Trial Phases</a></li>
+          <li><a href="/guides/caregiver-guide-to-clinical-trials/" style="color: var(--color-text-muted); text-decoration: none;">Caregiver Guide</a></li>
+          <li><a href="/guides/clinical-trial-myths/" style="color: var(--color-text-muted); text-decoration: none;">Myths vs Facts</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-bold mb-3 uppercase tracking-wide" style="color: var(--color-text-muted); font-family: var(--font-body);">
+          Browse Trials
+        </h3>
+        <ul class="space-y-1.5 text-sm" style="list-style: none; padding: 0;">
+          <li><a href="/conditions/" style="color: var(--color-text-muted); text-decoration: none;">All Conditions A–Z</a></li>
+          <li><a href="/condition/breast-cancer/" style="color: var(--color-text-muted); text-decoration: none;">Breast Cancer</a></li>
+          <li><a href="/condition/lung-cancer/" style="color: var(--color-text-muted); text-decoration: none;">Lung Cancer</a></li>
+          <li><a href="/condition/type-2-diabetes/" style="color: var(--color-text-muted); text-decoration: none;">Type 2 Diabetes</a></li>
+          <li><a href="/condition/alzheimers-disease/" style="color: var(--color-text-muted); text-decoration: none;">Alzheimer's</a></li>
+          <li><a href="/condition/depression/" style="color: var(--color-text-muted); text-decoration: none;">Depression</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-bold mb-3 uppercase tracking-wide" style="color: var(--color-text-muted); font-family: var(--font-body);">
+          Resources
+        </h3>
+        <ul class="space-y-1.5 text-sm" style="list-style: none; padding: 0;">
+          <li><a href="/glossary/" style="color: var(--color-text-muted); text-decoration: none;">Glossary (100+ terms)</a></li>
+          <li><a href="/faq/" style="color: var(--color-text-muted); text-decoration: none;">FAQ</a></li>
+          <li><a href="/about/" style="color: var(--color-text-muted); text-decoration: none;">About</a></li>
+          <li><a href="/privacy/" style="color: var(--color-text-muted); text-decoration: none;">Privacy Policy</a></li>
+          <li><a href="https://clinicaltrials.gov" rel="noopener noreferrer" target="_blank" style="color: var(--color-text-muted); text-decoration: none;">ClinicalTrials.gov</a></li>
+          <li><a href="https://www.nih.gov" rel="noopener noreferrer" target="_blank" style="color: var(--color-text-muted); text-decoration: none;">NIH</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-8 pt-6 text-sm flex flex-col md:flex-row justify-between items-center gap-4" style="border-top: 1px solid var(--color-border); color: var(--color-text-light);">
+      <p>&copy; {year} {siteConfig.name}. Trial data from <a href="https://clinicaltrials.gov" rel="noopener noreferrer" target="_blank" style="color: var(--color-text-muted);">ClinicalTrials.gov</a>.</p>
+      <p>This site does not provide medical advice. Always consult your doctor.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer a:hover { color: var(--color-accent) !important; text-decoration: underline !important; }
+</style>

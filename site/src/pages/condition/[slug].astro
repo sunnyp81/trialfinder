@@ -1,0 +1,142 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import TrialCard from '@/components/TrialCard.astro';
+import EmailCapture from '@/components/EmailCapture.astro';
+import { siteConfig } from '@/lib/site-config';
+import { buildMedicalConditionSchema, buildBreadcrumbSchema, buildItemListSchema } from '@/lib/schema';
+
+import conditionsData from '@/data/conditions.json';
+import trialsData from '@/data/trials.json';
+
+export function getStaticPaths() {
+  return conditionsData.map(condition => {
+    // Find trials matching this condition (case-insensitive)
+    const condLower = condition.name.toLowerCase();
+    const matchingTrials = trialsData.filter(t =>
+      t.conditions.some((c: string) => c.toLowerCase().includes(condLower) || condLower.includes(c.toLowerCase()))
+    );
+
+    return {
+      params: { slug: condition.slug },
+      props: { condition, trials: matchingTrials },
+    };
+  });
+}
+
+const { condition, trials } = Astro.props;
+
+const recruiting = trials.filter((t: any) => t.status === 'RECRUITING');
+const enrolling = trials.filter((t: any) => t.status === 'NOT_YET_RECRUITING');
+
+// Related conditions: find conditions with overlapping keywords
+const words = condition.name.toLowerCase().split(/\s+/);
+const related = conditionsData
+  .filter(c => c.slug !== condition.slug)
+  .filter(c => {
+    const cWords = c.name.toLowerCase().split(/\s+/);
+    return words.some(w => w.length > 3 && cWords.some(cw => cw.includes(w) || w.includes(cw)));
+  })
+  .slice(0, 5);
+
+const schemas = [
+  buildMedicalConditionSchema(condition),
+  buildBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Conditions', url: `${siteConfig.url}/#conditions` },
+    { name: condition.name, url: `${siteConfig.url}/condition/${condition.slug}/` },
+  ]),
+  buildItemListSchema(
+    recruiting.slice(0, 20).map((t: any) => ({
+      name: t.briefTitle,
+      url: `${siteConfig.url}/trial/${t.slug}/`,
+    }))
+  ),
+];
+---
+
+<BaseLayout
+  title={`Clinical Trials for ${condition.name} — Plain English`}
+  description={`${recruiting.length} clinical trials currently recruiting for ${condition.name}. Eligibility explained in plain English so you can see if you qualify.`}
+  schema={schemas}
+>
+  <div class="container section-sm">
+    <Breadcrumb items={[
+      { label: 'Conditions', href: '/#conditions' },
+      { label: condition.name },
+    ]} />
+
+    <article>
+      <header class="mb-8">
+        <h1 class="mb-3">Clinical Trials for {condition.name} — Plain English Summaries</h1>
+        <p style="color: var(--color-text-muted);">
+          {recruiting.length} trial{recruiting.length !== 1 ? 's' : ''} currently recruiting
+          {enrolling.length > 0 && <> &middot; {enrolling.length} opening soon</>}
+        </p>
+      </header>
+
+      <section aria-labelledby="about-condition-heading" class="mb-8">
+        <h2 id="about-condition-heading">About These Trials</h2>
+        <p style="color: var(--color-text-muted);">
+          The trials below are actively recruiting participants with {condition.name}.
+          Each entry shows the plain-English eligibility so you can quickly see if
+          you or a loved one might qualify.
+        </p>
+      </section>
+
+      {recruiting.length > 0 && (
+        <section aria-labelledby="trials-heading" class="mb-10">
+          <h2 id="trials-heading" class="mb-4">
+            Recruiting Now ({recruiting.length})
+          </h2>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {recruiting.map((trial: any) => (
+              <TrialCard trial={trial} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {enrolling.length > 0 && (
+        <section aria-labelledby="upcoming-heading" class="mb-10">
+          <h2 id="upcoming-heading" class="mb-4" style="color: var(--color-text-muted);">
+            Opening Soon ({enrolling.length})
+          </h2>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4" style="opacity: 0.85;">
+            {enrolling.map((trial: any) => (
+              <TrialCard trial={trial} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {related.length > 0 && (
+        <aside aria-labelledby="related-heading" class="mb-10 p-6" style="background: var(--color-bg-alt); border-radius: var(--radius-lg);">
+          <h2 id="related-heading" class="text-lg mb-3">Related Conditions</h2>
+          <ul class="space-y-2" style="list-style: none; padding: 0;">
+            {related.map(r => (
+              <li>
+                <a href={`/condition/${r.slug}/`}>
+                  {r.name} ({r.trialCount} trial{r.trialCount !== 1 ? 's' : ''})
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p class="text-sm mt-4" style="color: var(--color-text-light);">
+            Source:
+            <a href="https://clinicaltrials.gov" rel="noopener noreferrer" target="_blank">ClinicalTrials.gov</a> &middot;
+            <a href="https://www.nih.gov" rel="noopener noreferrer" target="_blank">NIH</a>
+          </p>
+        </aside>
+      )}
+
+      <EmailCapture
+        heading={`New ${condition.name} Trials — Email Alerts`}
+        description={`We'll notify you the moment a new recruiting trial opens for ${condition.name}, with eligibility explained in plain English.`}
+        subject={`TrialFinder — Condition Alert: ${condition.name}`}
+        condition={condition.name}
+        buttonText={`Alert Me to New ${condition.name} Trials →`}
+      />
+    </article>
+  </div>
+</BaseLayout>

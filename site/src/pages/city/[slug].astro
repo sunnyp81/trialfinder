@@ -1,0 +1,118 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import TrialCard from '@/components/TrialCard.astro';
+import { siteConfig } from '@/lib/site-config';
+import { buildBreadcrumbSchema } from '@/lib/schema';
+
+import citiesData from '@/data/cities.json';
+import trialsData from '@/data/trials.json';
+
+export function getStaticPaths() {
+  return citiesData.map(city => {
+    const matchingTrials = trialsData.filter(t =>
+      t.locations.some((loc: any) =>
+        loc.city.toLowerCase() === city.name.toLowerCase() &&
+        loc.state.toLowerCase() === city.state.toLowerCase()
+      )
+    );
+
+    // Find other cities in same state (up to 5)
+    const nearbyCities = citiesData
+      .filter(c => c.state === city.state && c.slug !== city.slug)
+      .slice(0, 5);
+
+    return {
+      params: { slug: city.slug },
+      props: { city, trials: matchingTrials, nearbyCities },
+    };
+  });
+}
+
+const { city, trials, nearbyCities } = Astro.props;
+
+const stateSlug = city.state.toLowerCase().replace(/\s+/g, '-');
+
+const schemas = [
+  buildBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'States', url: siteConfig.url },
+    { name: city.state, url: `${siteConfig.url}/state/${stateSlug}/` },
+    { name: city.name, url: `${siteConfig.url}/city/${city.slug}/` },
+  ]),
+];
+---
+
+<BaseLayout
+  title={`Clinical Trials in ${city.name}, ${city.state} | TrialFinder`}
+  description={`${trials.length} clinical trials recruiting in ${city.name}, ${city.state}. Plain English eligibility at ${city.facilityCount} research facilities.`}
+  schema={schemas}
+>
+  <div class="container section-sm">
+    <Breadcrumb items={[
+      { label: 'States', href: '/' },
+      { label: city.state, href: `/state/${stateSlug}/` },
+      { label: city.name },
+    ]} />
+
+    <header class="mb-8">
+      <h1 class="mb-3">Clinical Trials in {city.name}, {city.state} — Currently Recruiting</h1>
+      <p style="color: var(--color-text-muted);">
+        {trials.length} trial{trials.length !== 1 ? 's' : ''} at {city.facilityCount} research facilit{city.facilityCount !== 1 ? 'ies' : 'y'}
+      </p>
+    </header>
+
+    {city.facilities.length > 0 && (
+      <section aria-labelledby="facilities-heading" class="mb-10">
+        <h2 id="facilities-heading" class="mb-4">Research Facilities in {city.name}</h2>
+        <ul class="space-y-2" style="list-style: none; padding: 0;">
+          {city.facilities.map((facility: string) => (
+            <li class="p-4 card">
+              <span style="color: var(--color-text);">{facility}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {trials.length > 0 && (
+      <section aria-labelledby="trials-heading" class="mb-10">
+        <h2 id="trials-heading" class="mb-4">Trials Recruiting in {city.name}</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {trials.map((trial: any) => (
+            <TrialCard trial={trial} />
+          ))}
+        </div>
+      </section>
+    )}
+
+    {trials.length === 0 && (
+      <section class="mb-10 p-6" style="background: var(--color-bg-alt); border-radius: var(--radius-lg);">
+        <p style="color: var(--color-text-muted);">
+          No trials are currently recruiting in {city.name}. Check back soon or
+          <a href={`/state/${stateSlug}/`}>browse all trials in {city.state}</a>.
+        </p>
+      </section>
+    )}
+
+    {nearbyCities.length > 0 && (
+      <aside aria-labelledby="nearby-heading" class="mb-10 p-6" style="background: var(--color-bg-alt); border-radius: var(--radius-lg);">
+        <h2 id="nearby-heading" class="text-lg mb-3">Other Cities in {city.state}</h2>
+        <ul class="space-y-2" style="list-style: none; padding: 0;">
+          {nearbyCities.map((c: any) => (
+            <li>
+              <a href={`/city/${c.slug}/`} style="text-decoration: none;">
+                {c.name} ({c.trialCount} trial{c.trialCount !== 1 ? 's' : ''})
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-4">
+          <a href={`/state/${stateSlug}/`} class="btn-secondary text-sm">
+            View all trials in {city.state} &rarr;
+          </a>
+        </p>
+      </aside>
+    )}
+  </div>
+</BaseLayout>

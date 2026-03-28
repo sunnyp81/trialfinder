@@ -1,0 +1,25 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { siteConfig } from '@/lib/site-config';
+---
+
+<BaseLayout
+  title="Thank You"
+  description="Your submission has been received. We'll be in touch soon."
+  noIndex={true}
+>
+  <section class="section" style="background: var(--color-bg-warm, #faf8f5);">
+    <div class="container-narrow text-center" style="padding-block: 4rem;">
+      <h1 class="mb-4">Thank You</h1>
+      <p style="color: var(--color-text-muted); font-size: 1.125rem; max-width: 480px; margin-inline: auto; margin-bottom: 2rem;">
+        Your submission has been received. We'll be in touch if there are any relevant trial updates for you.
+      </p>
+      <p style="color: var(--color-text-muted); margin-bottom: 2.5rem;">
+        In the meantime, you can continue browsing trials by condition.
+      </p>
+      <a href="/" style="display: inline-block; padding: 0.75rem 2rem; background: var(--color-primary, #2563eb); color: #fff; border-radius: var(--radius-md, 8px); text-decoration: none; font-weight: 600;">
+        Back to Homepage
+      </a>
+    </div>
+  </section>
+</BaseLayout>

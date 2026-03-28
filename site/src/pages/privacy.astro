@@ -1,0 +1,53 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { siteConfig } from '@/lib/site-config';
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description="How TrialFinder handles your data. We are a fully static site with no cookies or tracking."
+  noIndex={true}
+>
+  <section class="section" style="background: var(--color-bg-warm, #faf8f5);">
+    <div class="container-narrow prose" style="padding-block: 3rem;">
+      <h1>Privacy Policy</h1>
+
+      <h2>What Data We Collect</h2>
+      <p>
+        TrialFinder is a fully static website. The site itself does not store any personal information, set cookies, or use tracking scripts. There are no user accounts, no analytics cookies, and no third-party ad trackers.
+      </p>
+
+      <h2>Form Submissions</h2>
+      <p>
+        If you submit a form on this site (for example, to receive trial alerts), your submission is processed by <a href="https://www.staticforms.xyz" target="_blank" rel="noopener">StaticForms</a>, a third-party form handling service. StaticForms receives and stores the information you provide, which typically includes your name, email address, and the content of your submission. This data is used solely to send you the information you requested.
+      </p>
+      <p>
+        You can review the StaticForms privacy policy at <a href="https://www.staticforms.xyz/privacy" target="_blank" rel="noopener">staticforms.xyz/privacy</a>.
+      </p>
+
+      <h2>Purpose of Data Collection</h2>
+      <p>
+        Any information you provide through forms on this site is used exclusively to send you clinical trial alerts or respond to your enquiry. We do not sell, rent, or share your information with any third parties for marketing purposes.
+      </p>
+
+      <h2>Cookies and Tracking</h2>
+      <p>
+        This site does not use cookies for tracking or advertising. No analytics platform is installed. Your browsing activity on TrialFinder is not monitored or recorded.
+      </p>
+
+      <h2>How to Unsubscribe</h2>
+      <p>
+        If you have signed up for trial alerts and wish to stop receiving them, you can unsubscribe at any time by emailing us directly. We will remove your information promptly upon request.
+      </p>
+
+      <h2>Third-Party Links</h2>
+      <p>
+        This site links to external resources such as <a href="https://clinicaltrials.gov" target="_blank" rel="noopener">ClinicalTrials.gov</a> and individual trial records. These external sites have their own privacy policies that we do not control.
+      </p>
+
+      <p style="color: var(--color-text-muted); margin-top: 2rem;">
+        Last updated: March 2026.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,5 @@
+[
+  {"name": "New York", "state": "New York", "displayName": "New York, New York", "slug": "new-york-new-york", "trialCount": 1, "facilities": ["Example Medical Center"], "facilityCount": 1},
+  {"name": "Los Angeles", "state": "California", "displayName": "Los Angeles, California", "slug": "los-angeles-california", "trialCount": 1, "facilities": ["Example Hospital"], "facilityCount": 1},
+  {"name": "Houston", "state": "Texas", "displayName": "Houston, Texas", "slug": "houston-texas", "trialCount": 1, "facilities": ["Texas Medical Center"], "facilityCount": 1}
+]

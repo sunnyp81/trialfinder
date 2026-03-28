@@ -1,0 +1,59 @@
+---
+import { categorizeCondition, conditionCategories } from '@/lib/site-config';
+
+interface Condition {
+  name: string;
+  slug: string;
+  trialCount: number;
+}
+
+interface Props {
+  conditions: Condition[];
+  limit?: number;
+}
+
+const { conditions, limit = 48 } = Astro.props;
+
+// Group conditions by category
+const grouped = new Map<string, Condition[]>();
+for (const cat of conditionCategories) {
+  grouped.set(cat.name, []);
+}
+grouped.set('Other', []);
+
+let count = 0;
+for (const c of conditions) {
+  if (count >= limit) break;
+  const cat = categorizeCondition(c.name);
+  const list = grouped.get(cat) || grouped.get('Other')!;
+  list.push(c);
+  count++;
+}
+---
+
+{Array.from(grouped.entries()).map(([category, items]) => {
+  if (items.length === 0) return null;
+  const catId = category.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+  return (
+    <section aria-labelledby={`cat-${catId}`} class="mb-6">
+      <h3 id={`cat-${catId}`} class="category-heading">
+        {category}
+      </h3>
+      <div class="grid-conditions">
+        {items.map(c => (
+          <a
+            href={`/condition/${c.slug}/`}
+            class="condition-tile"
+          >
+            <span class="condition-tile-name block font-semibold text-sm" style="color: var(--color-text);">
+              {c.name}
+            </span>
+            <span class="condition-tile-count text-xs" style="color: var(--color-text-light);">
+              {c.trialCount} trial{c.trialCount !== 1 ? 's' : ''}
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+})}

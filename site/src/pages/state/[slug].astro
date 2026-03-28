@@ -1,0 +1,89 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import TrialCard from '@/components/TrialCard.astro';
+import { siteConfig } from '@/lib/site-config';
+import { buildBreadcrumbSchema } from '@/lib/schema';
+
+import statesData from '@/data/states.json';
+import trialsData from '@/data/trials.json';
+
+export function getStaticPaths() {
+  return statesData.map(state => {
+    const matchingTrials = trialsData.filter(t =>
+      t.states.some((s: string) => s.toLowerCase().replace(/\s+/g, '-') === state.slug)
+    );
+
+    // Group by primary condition
+    const byCondition = new Map<string, typeof matchingTrials>();
+    for (const trial of matchingTrials) {
+      const cond = trial.conditions[0] || 'Other';
+      if (!byCondition.has(cond)) byCondition.set(cond, []);
+      byCondition.get(cond)!.push(trial);
+    }
+
+    return {
+      params: { slug: state.slug },
+      props: { state, trials: matchingTrials, byCondition: [...byCondition.entries()].sort(([,a], [,b]) => b.length - a.length) },
+    };
+  });
+}
+
+const { state, trials, byCondition } = Astro.props;
+
+const schemas = [
+  buildBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'States', url: siteConfig.url },
+    { name: state.name, url: `${siteConfig.url}/state/${state.slug}/` },
+  ]),
+];
+---
+
+<BaseLayout
+  title={`Clinical Trials in ${state.name} — Currently Recruiting`}
+  description={`${trials.length} clinical trials currently recruiting in ${state.name}. Eligibility explained in plain English.`}
+  schema={schemas}
+>
+  <div class="container section-sm">
+    <Breadcrumb items={[
+      { label: state.name },
+    ]} />
+
+    <header class="mb-8">
+      <h1 class="mb-3">Clinical Trials in {state.name} — Currently Recruiting</h1>
+      <p style="color: var(--color-text-muted);">
+        {trials.length} trial{trials.length !== 1 ? 's' : ''} across {byCondition.length} condition{byCondition.length !== 1 ? 's' : ''}
+      </p>
+    </header>
+
+    {byCondition.map(([condition, condTrials]: [string, any[]]) => {
+      const condSlug = condition.toLowerCase().replace(/[^\w\s-]/g, '').replace(/[\s_]+/g, '-').replace(/-+/g, '-');
+      const sectionId = `condition-${condSlug}`;
+      return (
+        <section aria-labelledby={sectionId} class="mb-10">
+          <h2 id={sectionId} class="mb-4">
+            <a href={`/condition/${condSlug}/`} style="text-decoration: none; color: var(--color-text);">
+              {condition}
+            </a>
+            <span class="text-base font-normal" style="color: var(--color-text-muted);">
+              ({condTrials.length})
+            </span>
+          </h2>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {condTrials.slice(0, 6).map((trial: any) => (
+              <TrialCard trial={trial} />
+            ))}
+          </div>
+          {condTrials.length > 6 && (
+            <p class="mt-3">
+              <a href={`/condition/${condSlug}/`} class="btn-secondary text-sm">
+                See all {condTrials.length} {condition} trials &rarr;
+              </a>
+            </p>
+          )}
+        </section>
+      );
+    })}
+  </div>
+</BaseLayout>

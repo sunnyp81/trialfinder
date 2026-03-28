@@ -1,0 +1,104 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import TrialCard from '@/components/TrialCard.astro';
+import { siteConfig } from '@/lib/site-config';
+import { buildBreadcrumbSchema } from '@/lib/schema';
+
+import phasesData from '@/data/phases.json';
+import trialsData from '@/data/trials.json';
+
+const phaseDescriptions: Record<string, string> = {
+  'EARLY_PHASE1': 'Early Phase 1 trials (also called Phase 0) are the first step in testing a new treatment in humans. These small studies (typically 10-15 people) help researchers understand how the drug behaves in the body.',
+  'PHASE1': 'Phase 1 trials are the first major stage of testing a new treatment in people. They focus primarily on safety \u2014 finding the right dose and identifying side effects. Groups are typically 20-80 participants.',
+  'PHASE2': 'Phase 2 trials test whether a treatment actually works against the disease. Having passed Phase 1 safety testing, researchers now study effectiveness in a larger group of 100-300 participants.',
+  'PHASE3': 'Phase 3 trials are large-scale studies that compare the new treatment to the current standard of care. These involve 300 to 3,000+ participants across multiple locations and are the final step before FDA approval.',
+  'PHASE4': 'Phase 4 trials (post-marketing studies) monitor treatments that are already FDA-approved and available to the public. They track long-term safety, effectiveness, and potential rare side effects.',
+  'NA': 'These trials don\'t follow the traditional phased approach. They may be observational studies, behavioral interventions, or device studies with different regulatory pathways.',
+};
+
+export function getStaticPaths() {
+  return phasesData.map(phase => {
+    const matchingTrials = trialsData.filter(t => t.phase.includes(phase.key));
+
+    return {
+      params: { slug: phase.slug },
+      props: { phase, trials: matchingTrials },
+    };
+  });
+}
+
+const { phase, trials } = Astro.props;
+
+const description = phaseDescriptions[phase.key] || '';
+const displayTrials = trials.slice(0, 50);
+const hasMore = trials.length > 50;
+
+const schemas = [
+  buildBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Phases', url: siteConfig.url },
+    { name: phase.name, url: `${siteConfig.url}/phase/${phase.slug}/` },
+  ]),
+];
+---
+
+<BaseLayout
+  title={`${phase.name} Clinical Trials — Recruiting Now | TrialFinder`}
+  description={`${trials.length} ${phase.name.toLowerCase()} clinical trials currently recruiting. See plain English eligibility criteria.`}
+  schema={schemas}
+>
+  <div class="container section-sm">
+    <Breadcrumb items={[
+      { label: 'Phases', href: '/' },
+      { label: phase.name },
+    ]} />
+
+    <header class="mb-8">
+      <h1 class="mb-3">{phase.name} Clinical Trials — Currently Recruiting</h1>
+      <p style="color: var(--color-text-muted);">
+        {trials.length} trial{trials.length !== 1 ? 's' : ''} in this phase
+      </p>
+    </header>
+
+    {description && (
+      <section aria-labelledby="about-phase-heading" class="mb-8 p-6" style="background: var(--color-bg-alt); border-radius: var(--radius-lg);">
+        <h2 id="about-phase-heading" class="text-lg mb-3">What Is {phase.name}?</h2>
+        <p style="color: var(--color-text-muted);">{description}</p>
+      </section>
+    )}
+
+    {displayTrials.length > 0 && (
+      <section aria-labelledby="trials-heading" class="mb-10">
+        <h2 id="trials-heading" class="mb-4">
+          Recruiting Now ({trials.length})
+        </h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {displayTrials.map((trial: any) => (
+            <TrialCard trial={trial} />
+          ))}
+        </div>
+        {hasMore && (
+          <p class="mt-6 p-4" style="background: var(--color-bg-alt); border-radius: var(--radius-md); color: var(--color-text-muted);">
+            Showing 50 of {trials.length} trials. More trials are available — use the condition or state pages to narrow your search.
+          </p>
+        )}
+      </section>
+    )}
+
+    {trials.length === 0 && (
+      <section class="mb-10 p-6" style="background: var(--color-bg-alt); border-radius: var(--radius-lg);">
+        <p style="color: var(--color-text-muted);">
+          No {phase.name} trials are currently recruiting. Check back soon or
+          <a href="/">browse all conditions</a>.
+        </p>
+      </section>
+    )}
+
+    <nav class="mb-10">
+      <a href="/guides/what-are-trial-phases/" class="btn-primary text-sm" style="text-decoration: none;">
+        Learn about trial phases &rarr;
+      </a>
+    </nav>
+  </div>
+</BaseLayout>

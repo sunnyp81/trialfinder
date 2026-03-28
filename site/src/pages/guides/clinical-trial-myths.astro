@@ -1,0 +1,115 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { siteConfig } from '@/lib/site-config';
+import { buildArticleSchema, buildBreadcrumbSchema } from '@/lib/schema';
+
+const title = "Clinical Trial Myths — 10 Common Misconceptions Debunked";
+const description = "Common myths about clinical trials separated from fact in plain English. Covers placebos, safety, eligibility, costs, leaving a trial, and what doctors know.";
+const url = `${siteConfig.url}/guides/clinical-trial-myths/`;
+
+const breadcrumbItems = [
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Clinical Trial Myths' },
+];
+
+const schema = [
+  buildArticleSchema({
+    title,
+    description,
+    url,
+    datePublished: '2026-03-26',
+    dateModified: '2026-03-26',
+  }),
+  buildBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Guides', url: `${siteConfig.url}/guides/` },
+    { name: 'Clinical Trial Myths', url },
+  ]),
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema} type="article">
+  <article class="container-narrow section-sm">
+    <Breadcrumb items={breadcrumbItems} />
+
+    <h1>{title}</h1>
+    <p style="color: var(--color-text-muted);">Last updated: March 2026 &middot; 7 min read</p>
+
+    <div class="prose">
+      <p>
+        Misunderstandings about clinical trials keep people from exploring options that could help them. Some of these myths have a grain of truth buried inside them, which makes them harder to shake. Let us separate fact from fiction so you can make decisions based on reality, not fear.
+      </p>
+
+      <section aria-labelledby="myth-1">
+        <h2 id="myth-1">Myth 1: "Trials are only for people who have no other options"</h2>
+        <p><strong>The truth:</strong> This is one of the most persistent myths, and it is simply wrong. While some people do join trials after standard treatments have stopped working, many trials specifically recruit people who have never been treated before. Phase 3 trials, which are the largest and most common type, often compare a new treatment against the current best option, meaning participants in both groups receive active care.</p>
+        <p>People at every stage of a condition participate in trials, from newly diagnosed to long-term management. Prevention trials enroll people who are healthy but at risk. The idea that trials are a "last resort" discourages people from accessing cutting-edge treatments early, when they may benefit most.</p>
+      </section>
+
+      <section aria-labelledby="myth-2">
+        <h2 id="myth-2">Myth 2: "You might get a sugar pill instead of real treatment"</h2>
+        <p><strong>The nuance:</strong> Placebos are used in some trials, but far less often than people assume. When an effective treatment already exists for your condition, ethics guidelines require that everyone in the trial receives at least that standard treatment. A placebo-only group is only permitted when no proven treatment exists or when adding a placebo poses no serious risk.</p>
+        <p>In trials that do use placebos, the design is clearly explained in the <a href="/guides/understanding-informed-consent/">informed consent</a> document. You will know before you join whether there is a possibility of receiving a placebo, and you will know the odds. Many modern trials use an "add-on" design where everyone gets the standard treatment and the study tests whether adding the new treatment improves outcomes.</p>
+      </section>
+
+      <section aria-labelledby="myth-3">
+        <h2 id="myth-3">Myth 3: "Clinical trials are dangerous experiments"</h2>
+        <p><strong>The truth:</strong> Clinical trials are among the most carefully regulated activities in medicine. Before a trial begins, it must be reviewed and approved by an Institutional Review Board (IRB) — an independent committee that includes doctors, scientists, and community members. The <a href="https://www.fda.gov/" target="_blank" rel="noopener noreferrer">FDA</a> oversees trial conduct, and a Data Safety Monitoring Board watches for safety signals throughout the study.</p>
+        <p>Every treatment used in a human trial has already been through extensive laboratory and often animal testing. Researchers are required to disclose all known risks. If unexpected safety concerns emerge during a trial, the study can be paused or stopped entirely. Participants can also <a href="/guides/how-to-join-a-clinical-trial/">leave at any time</a> without penalty.</p>
+      </section>
+
+      <section aria-labelledby="myth-4">
+        <h2 id="myth-4">Myth 4: "Only certain people can join trials"</h2>
+        <p><strong>The nuance:</strong> Every trial has <a href="/guides/how-to-read-eligibility-criteria/">eligibility criteria</a>, and some criteria can seem restrictive. But the range of trials is enormous. There are trials for nearly every age group, condition, and stage of disease. Some trials specifically seek participants who have been excluded from previous studies — older adults, people with multiple health conditions, or members of underrepresented communities.</p>
+        <p>If you have been turned away from one trial, that does not mean you are ineligible for all trials. Eligibility criteria vary widely from study to study. A condition or medication that disqualifies you from one trial may be perfectly acceptable in another.</p>
+      </section>
+
+      <section aria-labelledby="myth-5">
+        <h2 id="myth-5">Myth 5: "You are stuck if you join — you cannot leave"</h2>
+        <p><strong>The truth:</strong> This is completely false. You can withdraw from a clinical trial at any time, for any reason, without giving an explanation. This right is protected by federal regulations and is clearly stated in every informed consent document.</p>
+        <p>Leaving a trial will not affect your regular medical care. Your doctors are required to continue treating you regardless of your participation status. The research team may ask why you are leaving, so they can note it in their records, but you are not obligated to answer.</p>
+      </section>
+
+      <section aria-labelledby="myth-6">
+        <h2 id="myth-6">Myth 6: "Clinical trials are free"</h2>
+        <p><strong>The nuance:</strong> The study treatment itself is almost always provided at no cost. The sponsor (pharmaceutical company, government, or institution) covers the cost of the experimental medication and trial-related tests. However, "standard of care" costs — things your insurance would normally cover — are typically still billed to your insurance.</p>
+        <p>Travel expenses, lodging, meals, and time off work are not always covered, though some trials offer stipends or reimbursements. Before enrolling, ask the research team exactly what costs you may incur and whether financial assistance is available. Our <a href="/guides/questions-to-ask-your-doctor/">questions to ask</a> guide covers this in detail.</p>
+      </section>
+
+      <section aria-labelledby="myth-7">
+        <h2 id="myth-7">Myth 7: "Trials are only at big hospitals in big cities"</h2>
+        <p><strong>The truth:</strong> While academic medical centers do conduct many trials, research happens in community hospitals, private clinics, doctor's offices, and even through telemedicine. The decentralized trial movement, which accelerated after 2020, has made it possible to participate in some studies from home with medications delivered by mail and assessments done virtually.</p>
+        <p>Search for trials on <a href="https://clinicaltrials.gov/" target="_blank" rel="noopener noreferrer">ClinicalTrials.gov</a> or here on TrialFinder and filter by location. You may be surprised to find studies recruiting near you.</p>
+      </section>
+
+      <section aria-labelledby="myth-8">
+        <h2 id="myth-8">Myth 8: "The doctors do not know what they are giving you"</h2>
+        <p><strong>The nuance:</strong> In "double-blind" trials, neither the participant nor the treating doctor knows which group a participant is in — treatment or control. This design prevents bias from influencing the results. However, the research team always knows exactly what treatments are being used in the trial, and there is always an unblinded safety monitor who can reveal your assignment if a medical emergency requires it.</p>
+        <p>Not all trials are blinded. In "open-label" trials, everyone knows what treatment each participant receives. The trial's design will be explained to you during the informed consent process, so you will know upfront whether blinding is involved.</p>
+      </section>
+
+      <section aria-labelledby="myth-9">
+        <h2 id="myth-9">Myth 9: "If the treatment worked, it would already be approved"</h2>
+        <p><strong>The truth:</strong> Drug development takes time — typically 10 to 15 years from laboratory discovery to pharmacy shelves. A treatment being studied in a clinical trial may show genuine promise, but it must go through the full regulatory process before it can be approved for general use. That process exists to protect everyone.</p>
+        <p>Participating in a trial can give you access to a treatment years before it becomes publicly available. Many participants in cancer, HIV, and rare disease trials have benefited from treatments that were later approved by the FDA.</p>
+      </section>
+
+      <section aria-labelledby="myth-10">
+        <h2 id="myth-10">Myth 10: "My doctor would tell me if there were a relevant trial"</h2>
+        <p><strong>The truth:</strong> Many doctors are supportive of clinical trials but may not be aware of every study recruiting for your condition. There are more than 400,000 studies registered on ClinicalTrials.gov, and new ones open regularly. Your doctor may not have time to keep up with all of them, especially for rarer conditions.</p>
+        <p>Being proactive about searching for trials yourself — and then discussing what you find with your doctor — is often the most effective approach. Resources like TrialFinder, <a href="https://clinicaltrials.gov/" target="_blank" rel="noopener noreferrer">ClinicalTrials.gov</a>, and patient advocacy groups can help you discover options your doctor may not have mentioned.</p>
+      </section>
+
+      <section aria-labelledby="next-steps">
+        <h2 id="next-steps">The bottom line</h2>
+        <p>
+          Clinical trials are a well-regulated, essential part of medical progress. They are not risk-free — no medical treatment is — but they include more safeguards than most people realize. Understanding what trials actually involve, rather than what myths suggest, puts you in a stronger position to evaluate whether participating makes sense for you.
+        </p>
+        <p>
+          Ready to learn more? Start with our guide on <a href="/guides/what-is-a-clinical-trial/">what a clinical trial is</a>, or explore the <a href="/guides/how-to-join-a-clinical-trial/">step-by-step enrollment process</a>. You can also <a href="/">search for trials</a> by condition right here on TrialFinder.
+        </p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>
