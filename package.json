@@ -1,0 +1,6 @@
+{
+  "name": "placeholder",
+  "scripts": {
+    "build": "cd site && npm install && npm run build"
+  }
+}
