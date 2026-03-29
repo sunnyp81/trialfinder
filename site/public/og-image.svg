@@ -10,11 +10,11 @@
   <line x1="642" y1="282" x2="680" y2="320" stroke="#1C2B3A" stroke-width="6" stroke-linecap="round"/>
 
   <!-- Title -->
-  <text x="600" y="400" text-anchor="middle" font-family="Georgia, serif" font-size="64" font-weight="700" fill="#1C2B3A">TrialFinder</text>
+  <text x="600" y="400" text-anchor="middle" font-family="Georgia, serif" font-size="64" font-weight="700" fill="#1C2B3A">ClinicalTrialHub</text>
 
   <!-- Tagline -->
   <text x="600" y="460" text-anchor="middle" font-family="system-ui, sans-serif" font-size="28" fill="#4A5568">Clinical trials, in plain English.</text>
 
   <!-- URL -->
-  <text x="600" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" fill="#718096">trialfinder.co</text>
+  <text x="600" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" fill="#718096">clinicaltrialhub.co</text>
 </svg>

@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://trialfinder.co/sitemap-index.xml
+Sitemap: https://clinicaltrialhub.org/sitemap-index.xml

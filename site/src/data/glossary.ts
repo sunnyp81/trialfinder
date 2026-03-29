@@ -150,7 +150,7 @@ export const glossaryTerms = [
     term: 'Interventional Study',
     slug: 'interventional-study',
     definition: 'An interventional study (also called a clinical trial) gives participants a specific treatment — such as a drug, device, or procedure — and measures the results. Unlike observational studies, the researchers actively intervene in your care to test whether the new treatment works.',
-    whyItMatters: 'Most trials on TrialFinder are interventional, meaning you will receive a treatment that is being tested. This involves more commitment and potentially more risk than an observational study, but also the chance to access new therapies.',
+    whyItMatters: 'Most trials on ClinicalTrialHub are interventional, meaning you will receive a treatment that is being tested. This involves more commitment and potentially more risk than an observational study, but also the chance to access new therapies.',
     example: 'A listing might say: "Interventional, randomized, Phase 3 study." This confirms that participants will receive a treatment as part of the study.',
     relatedTerms: ['observational-study', 'randomized', 'investigational-drug'],
     category: 'trial-design',

@@ -1,7 +1,7 @@
 export const siteConfig = {
-  name: 'TrialFinder',
+  name: 'ClinicalTrialHub',
   tagline: 'Clinical trials, in plain English.',
-  url: 'https://trialfinder.co',
+  url: 'https://clinicaltrialhub.org',
   description: 'Find clinical trials explained in plain English. We translate complex eligibility criteria so you can quickly see if a trial might be right for you or someone you love.',
   staticFormsKey: 'YOUR_STATIC_FORMS_KEY',
   supportAffiliateUrl: '#',

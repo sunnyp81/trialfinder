@@ -1,8 +1,8 @@
-# TrialFinder
+# ClinicalTrialHub
 
 > Clinical trials explained in plain English
 
-TrialFinder translates complex clinical trial eligibility criteria into language patients and caregivers can actually understand. We pull data from ClinicalTrials.gov and rewrite the medical jargon into plain English at an 8th-grade reading level.
+ClinicalTrialHub translates complex clinical trial eligibility criteria into language patients and caregivers can actually understand. We pull data from ClinicalTrials.gov and rewrite the medical jargon into plain English at an 8th-grade reading level.
 
 ## What this site offers
 
@@ -14,13 +14,13 @@ TrialFinder translates complex clinical trial eligibility criteria into language
 
 ## Key pages
 
-- Homepage: https://trialfinder.co/
-- All Conditions: https://trialfinder.co/conditions/
-- Guide — What Is a Clinical Trial: https://trialfinder.co/guides/what-is-a-clinical-trial/
-- Guide — How to Join: https://trialfinder.co/guides/how-to-join-a-clinical-trial/
-- Guide — Trial Phases: https://trialfinder.co/guides/what-are-trial-phases/
-- Guide — Eligibility Criteria: https://trialfinder.co/guides/how-to-read-eligibility-criteria/
-- Guide — Questions for Your Doctor: https://trialfinder.co/guides/questions-to-ask-your-doctor/
+- Homepage: https://clinicaltrialhub.org/
+- All Conditions: https://clinicaltrialhub.org/conditions/
+- Guide — What Is a Clinical Trial: https://clinicaltrialhub.org/guides/what-is-a-clinical-trial/
+- Guide — How to Join: https://clinicaltrialhub.org/guides/how-to-join-a-clinical-trial/
+- Guide — Trial Phases: https://clinicaltrialhub.org/guides/what-are-trial-phases/
+- Guide — Eligibility Criteria: https://clinicaltrialhub.org/guides/how-to-read-eligibility-criteria/
+- Guide — Questions for Your Doctor: https://clinicaltrialhub.org/guides/questions-to-ask-your-doctor/
 
 ## Data source
 
