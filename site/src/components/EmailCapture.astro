@@ -35,8 +35,9 @@ const headingId = heading.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, 
   <p class="mb-4" style="color: var(--color-text-muted);">{description}</p>
 
   <form action="https://api.staticforms.xyz/submit" method="post" class="max-w-md">
+  <input type="hidden" name="_site" value="trialfinder.org" />
     <input type="hidden" name="accessKey" value={siteConfig.staticFormsKey} />
-    <input type="hidden" name="subject" value={subject} />
+    <input type="hidden" name="subject" value="Enquiry from trialfinder.org" />
     <input type="hidden" name="redirectTo" value={`${siteConfig.url}/thanks/`} />
     {trialId && <input type="hidden" name="$trial_id" value={trialId} />}
     {condition && <input type="hidden" name="$condition" value={condition} />}
